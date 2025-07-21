@@ -1,26 +1,22 @@
 import './App.css'
-import SearchBar from './components/Search/SearchBar';
-import Posts from './components/Reddit Posts/Posts';
-import SubReddits from './components/SubReddits/SubReddits';
+import HomePage from './pages/HomePage';
+import OAuthLogin from './features/oauth/OAuthLogin';
+import AuthCallback from './features/oauth/AuthCallback';
+import { BrowserRouter as Router, Routes, Route } from 'react-router';
 
 function App() {
-
   return (
-    <div>
-      <div className='header'>
-        <h1>RedditMinimal</h1>
-        <SearchBar />
-      </div>
-      <div className='main-body'>
-        <div className='main-posts'>
-          <Posts />
-        </div>
-        <div className='main-subreddits'>
-          <SubReddits />
-        </div>
-      </div>
-    </div>
-  );
+    <Router>
+      <Routes>
+        <Route path='/' element={<HomePage />}/>
+        <Route path='/login' element={<OAuthLogin />}/>
+        <Route path='/auth/callback' element={<AuthCallback />}/>
+      </Routes>
+    </Router>
+  )
 }
 
 export default App
+
+
+//RUN NODEMON INDEX.JS from cd server

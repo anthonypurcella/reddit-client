@@ -15,7 +15,7 @@ export default function SubReddits() {
     }, [dispatch, accessToken]);
 
     if (!accessToken) {
-      return <div>Please login first</div>;
+      return;
     }
 
   return (

@@ -2,40 +2,38 @@ import SearchBar from "../components/Search/SearchBar";
 import Posts from "../components/Reddit Posts/Posts";
 import SubReddits from "../components/SubReddits/SubReddits";
 import { useNavigate } from "react-router";
-import { useEffect } from "react";
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const loggedIn = localStorage.getItem("logged_token");
 
-  useEffect(() => {
+  function login() {
     const accessToken = localStorage.getItem("access_token");
-    if (!accessToken) {
+    if (!accessToken && !loggedIn) {
       navigate("/login");
     }
-  }, [navigate]);
-
-  function logout() {
-    fetch("/logout", { method: "POST" })
-      .then(() => {
-        // Clear localStorage tokens if any
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
-
-        // Redirect to login page or OAuthLogin component
-        window.location.href = "/login"; // or wherever your OAuthLogin is
-      })
-      .catch((err) => {
-        console.error("Logout failed", err);
-      });
+    localStorage.setItem("logged_token", "loggedIn");
   }
 
+  function logout() {
+    navigate("/");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("logged_token");
+
+    console.log("You are now logged out!");
+  }
 
   return (
     <div>
       <div className="header">
         <h1>RedditMinimal</h1>
         <SearchBar />
-        <button onClick={logout}>Log Out</button>
+        {loggedIn ? (
+          <button onClick={logout}>Log Out</button>
+        ) : (
+          <button onClick={login}>Login</button>
+        )}
       </div>
       <div className="main-body">
         <div className="main-posts">

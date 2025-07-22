@@ -4,7 +4,7 @@ import { useEffect } from "react";
 export default function OAuthLogin() {
   useEffect(() => {
     const REDDIT_CLIENT_ID = import.meta.env.VITE_REDDIT_CLIENT_ID;
-    const REDIRECT_URI = "http://10.0.0.16:5173/auth/callback";
+    const REDIRECT_URI = "http://localhost:5173/auth/callback";
     const SCOPE = "identity read mysubreddits";
     const STATE = uuidv4();
 

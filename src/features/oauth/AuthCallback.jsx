@@ -27,16 +27,19 @@ export default function AuthCallback() {
       }
 
       try {
-        const response = await fetch("http://10.0.0.16:3001/auth/reddit", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            code,
-            redirect_uri: "http://10.0.0.16:5173/auth/callback",
-          }),
-        });
+        const response = await fetch(
+          "http://localhost:3001/auth/reddit",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              code,
+              redirect_uri: "http://localhost:5173/auth/callback",
+            }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch access token");

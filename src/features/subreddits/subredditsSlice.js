@@ -13,7 +13,7 @@ export const fetchSubscribedSubreddits = createAsyncThunk(
       const url = new URL(
         "https://oauth.reddit.com/subreddits/mine/subscriber"
       );
-      url.searchParams.append("limit", "100"); // max allowed per request
+      url.searchParams.append("limit", "100");
       if (after) {
         url.searchParams.append("after", after);
       }

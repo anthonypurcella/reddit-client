@@ -21,7 +21,7 @@ export default function SubReddits() {
   return (
     <div className="sub-reddits">
       {subreddits.map((subreddit) => (
-        <li key={subreddit.id}><SubReddit name={subreddit.data.display_name_prefixed} icon={subreddit.data.icon_img}/></li>
+        <li key={subreddit.data.name}><SubReddit name={subreddit.data.display_name_prefixed} icon={subreddit.data.icon_img}/></li>
       ))}
       <SubReddit />
     </div>

@@ -10,6 +10,7 @@ export default function HomePage() {
   function login() {
     const accessToken = localStorage.getItem("access_token");
     if (!accessToken && !loggedIn) {
+      console.log("Redirecting to OAuthLogin");
       navigate("/login");
     }
     localStorage.setItem("logged_token", "loggedIn");

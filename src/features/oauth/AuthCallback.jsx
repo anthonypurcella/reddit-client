@@ -11,27 +11,30 @@ export default function AuthCallback() {
       const returnedState = params.get("state");
       const savedState = localStorage.getItem("oauth_state");
 
+      console.log("Returned state:", returnedState);
+      console.log("Saved state:", savedState);
+
       if (!code || !returnedState) {
         alert("Missing code or state — cannot authenticate");
-        navigate("/"); // redirect away
+        navigate("/");
         return;
       }
 
       if (returnedState !== savedState) {
         alert("State mismatch — possible CSRF attack.");
-        navigate("/"); // redirect away
+        navigate("/");
         return;
       }
 
       try {
-        const response = await fetch("http://localhost:3001/auth/reddit", {
+        const response = await fetch("http://10.0.0.16:3001/auth/reddit", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             code,
-            redirect_uri: "http://localhost:5173/auth/callback",
+            redirect_uri: "http://10.0.0.16:5173/auth/callback",
           }),
         });
 
@@ -55,10 +58,10 @@ export default function AuthCallback() {
         localStorage.setItem("refresh_token", refresh_token);
         localStorage.removeItem("oauth_state");
 
-        navigate("/"); // go back home
+        navigate("/");
       } catch (err) {
         alert(`Auth failed: ${err.message}`);
-        navigate("/"); // redirect on failure
+        navigate("/");
       }
     }
 

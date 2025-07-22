@@ -1,11 +1,11 @@
 
-export default function SubReddit() {
+export default function SubReddit({name, icon}) {
     return (
-        <>
+      <>
         <div className="sub-reddit">
-            <img alt="⚫️"/>
-            <p>r/SubRedditName</p>
+          <img src={icon ? icon : "public/reddit-logo.jpg"} />
+          <p>{name}</p>
         </div>
-        </>
-    )
+      </>
+    );
 }

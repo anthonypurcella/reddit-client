@@ -14,11 +14,28 @@ export default function HomePage() {
     }
   }, [navigate]);
 
+  function logout() {
+    fetch("/logout", { method: "POST" })
+      .then(() => {
+        // Clear localStorage tokens if any
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+
+        // Redirect to login page or OAuthLogin component
+        window.location.href = "/login"; // or wherever your OAuthLogin is
+      })
+      .catch((err) => {
+        console.error("Logout failed", err);
+      });
+  }
+
+
   return (
     <div>
       <div className="header">
         <h1>RedditMinimal</h1>
         <SearchBar />
+        <button onClick={logout}>Log Out</button>
       </div>
       <div className="main-body">
         <div className="main-posts">

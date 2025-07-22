@@ -112,16 +112,20 @@
 }
 
 /* SubReddits */
+.sub-reddits li {
+  list-style: none;
+}
 .sub-reddits {
   background-color: lightgray;
   color: black;
   border-radius: 10px;
   width: 200px;
-  height: 500px;
+  max-height: 1200px;
   padding: 2rem;
 
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  overflow: scroll;
   align-items: start;
 }
 
@@ -131,6 +135,13 @@
   align-items: center;
 }
 
+.sub-reddit img {
+  height: 35px;
+  border-radius: 100%;
+  background-color: white;
+  border: 1px solid orangered;
+  margin-right: 5px;
+}
 /* Responsive */
 
 @media only screen and (max-width: 960px) {

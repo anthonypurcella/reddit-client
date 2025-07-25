@@ -2,15 +2,17 @@ import SearchBar from "../components/Search/SearchBar";
 import Posts from "../components/Reddit Posts/Posts";
 import SubReddits from "../components/SubReddits/SubReddits";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { clearPosts } from "../features/posts/displayPostsSlice";
 
 export default function HomePage() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const loggedIn = localStorage.getItem("logged_token");
 
   function login() {
     const accessToken = localStorage.getItem("access_token");
-    if (!accessToken && !loggedIn) {
-      console.log("Redirecting to OAuthLogin");
+    if (!accessToken) {
       navigate("/login");
     }
     localStorage.setItem("logged_token", "loggedIn");
@@ -22,7 +24,8 @@ export default function HomePage() {
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("logged_token");
 
-    console.log("You are now logged out!");
+    //dispatch(clearPosts());
+    console.log("Logged out!");
   }
 
   return (

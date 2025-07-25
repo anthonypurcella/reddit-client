@@ -60,6 +60,7 @@ export default function AuthCallback() {
         localStorage.setItem("access_token", access_token);
         localStorage.setItem("refresh_token", refresh_token);
         localStorage.removeItem("oauth_state");
+        console.log("Logged in!");
 
         navigate("/");
       } catch (err) {

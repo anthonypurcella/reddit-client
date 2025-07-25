@@ -7,16 +7,11 @@ export const fetchSubscribedSubreddits = createAsyncThunk(
     const accessToken = await getValidAccessToken();
 
     let subreddits = [];
-    let after = null;
 
-    do {
       const url = new URL(
         "https://oauth.reddit.com/subreddits/mine/subscriber"
       );
       url.searchParams.append("limit", "100");
-      if (after) {
-        url.searchParams.append("after", after);
-      }
 
       const response = await fetch(url.toString(), {
         headers: {
@@ -37,10 +32,19 @@ export const fetchSubscribedSubreddits = createAsyncThunk(
 
       subreddits = subreddits.concat(data.data.children);
       console.log(subreddits);
-      after = data.data.after;
-    } while (after);
-
-    return subreddits;
+      
+      // Sort alphabetically from subreddit name
+      function compare(a, b) {
+        if (a.data.display_name < b.data.display_name) {
+          return -1;
+        } 
+        if (a.data.display_name > b.data.display_name) {
+          return 1;
+        }
+        return 0;
+      }
+      
+    return subreddits.sort(compare);
   }
 );
 

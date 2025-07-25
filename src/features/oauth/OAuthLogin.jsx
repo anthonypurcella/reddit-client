@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useEffect } from "react";
 
 export default function OAuthLogin() {
+
   useEffect(() => {
     const REDDIT_CLIENT_ID = import.meta.env.VITE_REDDIT_CLIENT_ID;
     const REDIRECT_URI = "http://localhost:5173/auth/callback";

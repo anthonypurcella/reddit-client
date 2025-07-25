@@ -46,10 +46,21 @@
   display: flex;
   flex-direction: column;
   
+  margin-bottom: 20px;
+  padding-right: 80px;
 }
 
 .post-header {
   display: flex;
+}
+
+.post-header p {
+  margin-right: 10px;
+}
+
+.post-time {
+  color: gray;
+  display: none;
 }
 
 .post-without-sub {
@@ -89,12 +100,17 @@
 
 .post-name h3 {
   margin: 0 0;
+  margin-bottom: 10px;
 }
 
 .post-body {
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+.post-image {
+  width: 80%;
 }
 
 .post-details {
@@ -193,6 +209,9 @@
 }
 
 @media only screen and (max-width: 400px) {
+  .post-time {
+    display: block;
+  }
   .post-voting p {
     display: none;
   }

@@ -24,7 +24,7 @@ export default function HomePage() {
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("logged_token");
 
-    //dispatch(clearPosts());
+    dispatch(clearPosts());
     console.log("Logged out!");
   }
 

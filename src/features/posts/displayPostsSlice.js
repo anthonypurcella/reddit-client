@@ -5,9 +5,8 @@ export const fetchSubredditsPosts = createAsyncThunk(
   "posts/fetchPosts",
   async (afterToken = null) => {
     const accessToken = await getValidAccessToken();
-    const loggedIn = localStorage.getItem("logged_token");
 
-    if (loggedIn) {
+
       const url = new URL("https://oauth.reddit.com/new");
       url.searchParams.append("limit", "10");
 
@@ -33,7 +32,6 @@ export const fetchSubredditsPosts = createAsyncThunk(
       console.log("REDDIT RESPONSE after:", data.data.after);
 
       return { posts, after };
-    }
   }
 );
 

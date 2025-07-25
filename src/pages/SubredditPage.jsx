@@ -1,14 +1,15 @@
 import SearchBar from "../components/Search/SearchBar";
-import Posts from "../components/Reddit Posts/Posts";
+import SubredditPosts from "../components/Reddit Posts/SubredditPosts";
 import SubReddits from "../components/SubReddits/SubReddits";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { clearPosts } from "../features/posts/displayPostsSlice";
 
-export default function HomePage() {
+export default function SubredditPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const loggedIn = localStorage.getItem("logged_token");
+
 
   function login() {
     const accessToken = localStorage.getItem("access_token");
@@ -42,7 +43,7 @@ export default function HomePage() {
       </div>
       <div className="main-body">
         <div className="main-posts">
-          <Posts />
+          <SubredditPosts />
         </div>
         {loggedIn ? (
           <div className="main-subreddits">

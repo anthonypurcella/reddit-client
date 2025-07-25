@@ -29,7 +29,6 @@ export const fetchSubredditsPosts = createAsyncThunk(
       const posts = data.data.children;
       console.log(posts);
       const after = data.data.after;
-      console.log("REDDIT RESPONSE after:", data.data.after);
 
       return { posts, after };
   }
@@ -49,7 +48,7 @@ const displayPostsSlice = createSlice({
       state.after = null;
       state.status = "idle";
       state.error = null;
-      console.log(`Posts cleared! State: ${state.list}`);
+      console.log(`Posts cleared!`);
     },
   },
   extraReducers(builder) {
@@ -58,11 +57,9 @@ const displayPostsSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchSubredditsPosts.fulfilled, (state, action) => {
-        console.log("FULFILLED payload:", action.payload);
         state.status = "succeeded";
         state.list = [...state.list, ...action.payload.posts];
         state.after = action.payload.after;
-        console.log("STATE after:", state.after);
       })
       .addCase(fetchSubredditsPosts.rejected, (state, action) => {
         state.status = "failed";

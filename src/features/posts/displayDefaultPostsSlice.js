@@ -35,12 +35,11 @@ const displayDefaultPostsSlice = createSlice({
         .addCase(fetchDefaultPosts.fulfilled, (state, action) => {
             state.status = "succeeded";
             state.list = [...state.list, ...action.payload];
-            console.log(action.payload);
-            console.log(action.payload[0].data.subreddit_name_prefixed);
         })
         .addCase(fetchDefaultPosts.rejected, (state, action) => {
             state.status = "failed";
             state.error = action.error.message;
+            console.log(state.error);
         })
     } 
 });

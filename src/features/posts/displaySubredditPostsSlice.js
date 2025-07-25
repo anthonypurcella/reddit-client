@@ -28,11 +28,10 @@ const displaySubredditPostsSlice = createSlice({
         error: null,
     },
     reducers: {
-        clearPosts(state) {
+        clearSubPosts(state) {
             state.list = [];
             state.status = "idle";
             state.error = null;
-            console.log(`Posts cleared!`);
         }
     },
     extraReducers(builder) {
@@ -52,5 +51,5 @@ const displaySubredditPostsSlice = createSlice({
     }
 });
 
-export const { clearPosts } = displaySubredditPostsSlice.actions;
+export const { clearSubPosts } = displaySubredditPostsSlice.actions;
 export default displaySubredditPostsSlice.reducer;

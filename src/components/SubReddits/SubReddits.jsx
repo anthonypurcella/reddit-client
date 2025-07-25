@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchSubscribedSubreddits } from "../../features/subreddits/subredditsSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import { clearPosts } from "../../features/posts/displaySubredditPostsSlice";
+import { clearSubPosts } from "../../features/posts/displaySubredditPostsSlice";
+import {clearPosts} from "../../features/posts/displayPostsSlice";
 
 export default function SubReddits() {
   const dispatch = useDispatch();
@@ -27,10 +28,15 @@ export default function SubReddits() {
     function handleSubredditClick(e, subredditName) {
       e.preventDefault();
 
+      if (localStorage.getItem('subreddit_pick') === subredditName) {
+        return;
+      }
+      
       localStorage.setItem("subreddit_pick", (subredditName));
       console.log( "Selected subreddit: " + localStorage.getItem("subreddit_pick"));
 
       dispatch(clearPosts());
+      dispatch(clearSubPosts());
       navigate(`/subreddit/posts/${subredditName}`);
     }
 

@@ -10,11 +10,9 @@ export default function Posts() {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts.list);
   const defaultPosts = useSelector((state) => state.defaultposts.list);
-  const subredditPosts = useSelector((state) => state.subredditposts.list);
 
   const accessToken = localStorage.getItem("access_token");
   const loggedIn = localStorage.getItem("logged_token");
-  const subredditPick = localStorage.getItem("subreddit_pick");
 
 
 
@@ -30,11 +28,6 @@ export default function Posts() {
     }
   }, [accessToken, loggedIn]);
 
-  useEffect(() => {
-    if (subredditPick) {
-      dispatch(fetchSubredditPosts());
-    }
-  }, [subredditPick]);
 
 
 
@@ -66,29 +59,6 @@ export default function Posts() {
       <>
         <div className="posts">
           {defaultPosts.map((post) => (
-            <Post
-              key={post.data.id}
-              subreddit={post.data.subreddit_name_prefixed}
-              title={post.data.title}
-              text={post.data.selftext}
-              image={post.data.preview?.images?.[0]?.source?.url?.replace(
-                /&amp;/g,
-                "&"
-              )}
-              voteNum={post.data.ups}
-              timePosted={post.data.created_utc}
-            />
-          ))}
-        </div>
-      </>
-    );
-  }
-
-  if (subredditPick) {
-    return (
-      <>
-        <div className="posts">
-          {subredditPosts.map((post) => (
             <Post
               key={post.data.id}
               subreddit={post.data.subreddit_name_prefixed}

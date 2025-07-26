@@ -29,6 +29,7 @@ export default function HomePage() {
     console.log("Logged out!");
   }
 
+
   return (
     <div>
       <div className="header">

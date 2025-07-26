@@ -42,9 +42,21 @@ export default function SubReddits() {
 
   return (
     <div className="sub-reddits">
+      {localStorage.getItem("subreddit_pick") ? <div className="active-subreddit">
+        <p>r/{localStorage.getItem("subreddit_pick")}</p>
+      </div> : <></>}
       {subreddits.map((subreddit) => (
-        <button onClick={(e) => handleSubredditClick(e, subreddit.data.display_name)} key={subreddit.data.name}><SubReddit name={subreddit.data.display_name_prefixed} icon={subreddit.data.icon_img}/></button>
+        <button
+          onClick={(e) => handleSubredditClick(e, subreddit.data.display_name)}
+          key={subreddit.data.name}
+        >
+          <SubReddit
+            name={subreddit.data.display_name_prefixed}
+            icon={subreddit.data.icon_img}
+          />
+        </button>
       ))}
     </div>
   );
 }
+

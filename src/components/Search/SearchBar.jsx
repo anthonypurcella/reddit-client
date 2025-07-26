@@ -4,9 +4,14 @@ import { fetchSearchTerm } from "../../features/search/searchRedditSlice";
 import { useDebounce } from "react-use";
 import Search from "./Search";
 import { clearSearches } from "../../features/search/searchRedditSlice";
+import { clearSubPosts } from "../../features/posts/displaySubredditPostsSlice";
+import { clearPosts } from "../../features/posts/displayPostsSlice";
+import { useNavigate } from "react-router";
+
 
 export default function SearchBar() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
 
   function handleSearchChange(searched) {
@@ -30,9 +35,26 @@ export default function SearchBar() {
 
   useEffect(() => {
     if (debouncedSearchTerm) {
-        dispatch(fetchSearchTerm(debouncedSearchTerm));
+      dispatch(fetchSearchTerm(debouncedSearchTerm));
     }
   }, [debouncedSearchTerm]);
+
+  function handleSubredditClick(e, subredditName) {
+    e.preventDefault();
+
+    if (localStorage.getItem("subreddit_pick") === subredditName) {
+      return;
+    }
+
+    localStorage.setItem("subreddit_pick", subredditName);
+    console.log(
+      "Selected subreddit: " + localStorage.getItem("subreddit_pick")
+    );
+
+    dispatch(clearPosts());
+    dispatch(clearSubPosts());
+    navigate(`/subreddit/posts/${subredditName}`);
+  }
 
   return (
     <div className="search-bar">
@@ -49,7 +71,14 @@ export default function SearchBar() {
           <div className="modal-overlay" onMouseLeave={handleCloseModal}>
             <div className="modal-content">
               {searches.map((search) => (
-                <Search subreddit={search.data.display_name_prefixed} />
+                <button
+                  key={search.data.id}
+                  onClick={(e) =>
+                    handleSubredditClick(e, search.data.display_name)
+                  }
+                >
+                  <Search subreddit={search.data.display_name_prefixed} />
+                </button>
               ))}
             </div>
           </div>

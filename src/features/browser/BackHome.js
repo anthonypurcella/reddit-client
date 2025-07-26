@@ -12,6 +12,7 @@ function BackToHomeOnBackButton() {
     });
 
     previousLocation.current = location;
+    localStorage.removeItem('subreddit_pick');
 
     return () => {
       window.removeEventListener("popstate", () => {});

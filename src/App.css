@@ -28,11 +28,19 @@
 
 .search-bar input {
   width: 10rem;
+  padding: .5rem 3rem .5rem 1rem;
+  border-radius: 10px;
+  z-index: 3;
+}
+
+.search-bar input:focus {
+  outline: 1px white solid;
+  border: none;
 }
 
 .modal-overlay {
   display: flex;
-  z-index: 1000;
+  z-index: 2;
   text-align: left;
   position: absolute;
   justify-self: center;
@@ -42,7 +50,7 @@
   background: black;
   padding: 2rem;
   border-radius: 10px;
-  width: 200px;
+  width: 10rem;
 }
 
 /* Post */

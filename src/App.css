@@ -30,6 +30,21 @@
   width: 10rem;
 }
 
+.modal-overlay {
+  display: flex;
+  z-index: 1000;
+  text-align: left;
+  position: absolute;
+  justify-self: center;
+}
+
+.modal-content {
+  background: black;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 200px;
+}
+
 /* Post */
 .main-posts {
   max-width: 800px;
@@ -138,10 +153,10 @@
   background-color: lightgray;
   color: black;
   border-radius: 10px;
-  width: 200px;
+  width: 250px;
   max-height: 1200px;
   padding: 2rem;
-
+  margin-right: 2rem;
   display: flex;
   flex-direction: column;
   overflow: scroll;
@@ -160,6 +175,13 @@
   background-color: white;
   border: 1px solid orangered;
   margin-right: 5px;
+}
+
+.sub-reddits button {
+  background: transparent;
+  color: black;
+  outline: none;
+  padding: 0 0;
 }
 /* Responsive */
 

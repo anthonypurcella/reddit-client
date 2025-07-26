@@ -41,9 +41,6 @@ export default function HomePage() {
         )}
       </div>
       <div className="main-body">
-        <div className="main-posts">
-          <Posts />
-        </div>
         {loggedIn ? (
           <div className="main-subreddits">
             <SubReddits />
@@ -51,6 +48,9 @@ export default function HomePage() {
         ) : (
           <></>
         )}
+        <div className="main-posts">
+          <Posts />
+        </div>
       </div>
     </div>
   );

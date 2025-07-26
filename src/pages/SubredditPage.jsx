@@ -42,9 +42,6 @@ export default function SubredditPage() {
         )}
       </div>
       <div className="main-body">
-        <div className="main-posts">
-          <SubredditPosts />
-        </div>
         {loggedIn ? (
           <div className="main-subreddits">
             <SubReddits />
@@ -52,6 +49,9 @@ export default function SubredditPage() {
         ) : (
           <></>
         )}
+        <div className="main-posts">
+          <SubredditPosts />
+        </div>
       </div>
     </div>
   );

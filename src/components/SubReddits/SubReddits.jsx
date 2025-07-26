@@ -45,7 +45,6 @@ export default function SubReddits() {
       {subreddits.map((subreddit) => (
         <button onClick={(e) => handleSubredditClick(e, subreddit.data.display_name)} key={subreddit.data.name}><SubReddit name={subreddit.data.display_name_prefixed} icon={subreddit.data.icon_img}/></button>
       ))}
-      <SubReddit />
     </div>
   );
 }

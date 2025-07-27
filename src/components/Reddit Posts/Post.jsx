@@ -3,7 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import { postVote } from "../../features/posts/voting/voteSlice";
 import { useDispatch } from "react-redux";
 import { clearSubPosts } from "../../features/posts/displaySubredditPostsSlice";
-import {fetchSubredditPosts} from '../../features/posts/displaySubredditPostsSlice';
+import { fetchSubredditPosts } from "../../features/posts/displaySubredditPostsSlice";
 
 export default function Post({
   subreddit,
@@ -44,11 +44,10 @@ export default function Post({
   }
 
   async function handleUpVote(likes, postId) {
-
     if (likes !== true) {
-          const id = `t3_${postId}`;
-          const voteNum = 1;
-          await dispatch(postVote({ id, voteNum }));
+      const id = `t3_${postId}`;
+      const voteNum = 1;
+      await dispatch(postVote({ id, voteNum }));
     }
 
     if (likes === true) {
@@ -57,8 +56,25 @@ export default function Post({
       await dispatch(postVote({ id, voteNum }));
     }
 
-      dispatch(clearSubPosts());
-      dispatch(fetchSubredditPosts());
+    dispatch(clearSubPosts());
+    dispatch(fetchSubredditPosts());
+  }
+
+  async function handleDownVote(likes, postId) {
+    if (likes !== false) {
+      const id = `t3_${postId}`;
+      const voteNum = -1;
+      await dispatch(postVote({ id, voteNum }));
+    }
+
+    if (likes === false) {
+      const id = `t3_${postId}`;
+      const voteNum = 0;
+      await dispatch(postVote({ id, voteNum }));
+    }
+
+    dispatch(clearSubPosts());
+    dispatch(fetchSubredditPosts());
   }
 
   return (
@@ -71,16 +87,16 @@ export default function Post({
         <div className="post-without-sub">
           <div className="post-voting">
             <div className="voting-button">
-              {(!likes) ? (
+              {likes === true ? (
                 <button
-                  className="up-vote"
+                  className="up-vote-complete"
                   onClick={() => handleUpVote(likes, postId)}
                 >
                   ꜛ
                 </button>
               ) : (
                 <button
-                  className="up-vote-complete"
+                  className="up-vote"
                   onClick={() => handleUpVote(likes, postId)}
                 >
                   ꜛ
@@ -89,7 +105,21 @@ export default function Post({
             </div>
             <p>{voteNum}</p>
             <div className="voting-button">
-              <button className="down-vote">ꜜ</button>
+              {likes === false ? (
+                <button
+                  className="down-vote-complete"
+                  onClick={() => handleDownVote(likes, postId)}
+                >
+                  ꜜ
+                </button>
+              ) : (
+                <button
+                  className="down-vote"
+                  onClick={() => handleDownVote(likes, postId)}
+                >
+                  ꜜ
+                </button>
+              )}
             </div>
           </div>
           <div className="post-body">

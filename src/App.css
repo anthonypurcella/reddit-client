@@ -134,6 +134,16 @@
   height: 16px;
 }
 
+.down-vote-complete {
+    height: 20px;
+  width: 20px;
+  padding: 0 0;
+  display: flex;
+  justify-content: center;
+  height: 16px;
+  background-color: red;
+}
+
 .post-name h3 {
   margin: 0 0;
   margin-bottom: 10px;

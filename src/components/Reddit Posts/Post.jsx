@@ -4,6 +4,8 @@ import { postVote } from "../../features/posts/voting/voteSlice";
 import { useDispatch } from "react-redux";
 import { clearSubPosts } from "../../features/posts/displaySubredditPostsSlice";
 import { fetchSubredditPosts } from "../../features/posts/displaySubredditPostsSlice";
+import { fetchSubredditsPosts } from "../../features/posts/displayPostsSlice";
+import { clearPosts } from "../../features/posts/displayPostsSlice";
 
 export default function Post({
   subreddit,
@@ -56,8 +58,15 @@ export default function Post({
       await dispatch(postVote({ id, voteNum }));
     }
 
-    dispatch(clearSubPosts());
-    dispatch(fetchSubredditPosts());
+    if (localStorage.getItem("subreddit_pick")) {
+      dispatch(clearSubPosts());
+      dispatch(fetchSubredditPosts());
+    }
+
+    if (!localStorage.getItem("subreddit_pick")) {
+      dispatch(clearPosts());
+      dispatch(fetchSubredditsPosts());
+    }
   }
 
   async function handleDownVote(likes, postId) {
@@ -73,8 +82,15 @@ export default function Post({
       await dispatch(postVote({ id, voteNum }));
     }
 
-    dispatch(clearSubPosts());
-    dispatch(fetchSubredditPosts());
+    if (localStorage.getItem("subreddit_pick")) {
+      dispatch(clearSubPosts());
+      dispatch(fetchSubredditPosts());
+    }
+
+      if (!localStorage.getItem("subreddit_pick")) {
+        dispatch(clearPosts());
+        dispatch(fetchSubredditsPosts());
+      }
   }
 
   return (

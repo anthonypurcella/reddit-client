@@ -115,6 +115,16 @@
   height: 16px;
 }
 
+.up-vote-complete {
+    height: 20px;
+  width: 20px;
+  padding: 0 0;
+  display: flex;
+  justify-content: center;
+  height: 16px;
+  background-color: blue;
+}
+
 .down-vote {
   height: 20px;
   width: 20px;

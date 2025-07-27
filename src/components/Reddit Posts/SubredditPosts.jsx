@@ -31,6 +31,8 @@ export default function SubredditPosts() {
               )}
               voteNum={post.data.ups}
               timePosted={post.data.created_utc}
+              postId={post.data.id}
+              likes={post.data.likes}
             />
           ))}
         </div>

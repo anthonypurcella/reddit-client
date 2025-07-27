@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import subredditsReducer from '../features/subreddits/subredditsSlice'
-import postsReducer from '../features/posts/displayPostsSlice'
-import defaultpostsReducer from '../features/posts/displayDefaultPostsSlice'
-import subredditpostsReducer from '../features/posts/displaySubredditPostsSlice'
+import subredditsReducer from '../features/subreddits/subredditsSlice';
+import postsReducer from '../features/posts/displayPostsSlice';
+import defaultpostsReducer from '../features/posts/displayDefaultPostsSlice';
+import subredditpostsReducer from '../features/posts/displaySubredditPostsSlice';
 import searchRedditReducer from '../features/search/searchRedditSlice';
+import votingReducer from '../features/posts/voting/voteSlice';
 
 
 const store = configureStore({
@@ -13,6 +14,7 @@ const store = configureStore({
         defaultposts: defaultpostsReducer,
         subredditposts: subredditpostsReducer,
         searchreddit: searchRedditReducer,
+        vote: votingReducer,
     },
 })
 

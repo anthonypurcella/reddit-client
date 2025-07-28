@@ -3,12 +3,10 @@ import getValidAccessToken from "../oauth/getValidAccessToken";
 
 export const fetchSubredditPosts = createAsyncThunk(
   "posts/subredditposts",
-  async () => {
+  async (subredditName) => {
     const accessToken = await getValidAccessToken();
-    let subreddit = localStorage.getItem("subreddit_pick");
-    console.log(subreddit);
 
-    const url = new URL(`https://oauth.reddit.com/r/${subreddit}/.json`);
+    const url = new URL(`https://oauth.reddit.com/r/${subredditName}/.json`);
     const response = await fetch(url.toString(), {
       headers: {
         Authorization: `Bearer ${accessToken}`,

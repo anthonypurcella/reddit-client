@@ -6,6 +6,7 @@ import Search from "./Search";
 import { clearSearches } from "../../features/search/searchRedditSlice";
 import { clearSubPosts } from "../../features/posts/displaySubredditPostsSlice";
 import { clearPosts } from "../../features/posts/displayPostsSlice";
+import { fetchSubredditPosts } from "../../features/posts/displaySubredditPostsSlice";
 import { useNavigate } from "react-router";
 
 
@@ -42,18 +43,16 @@ export default function SearchBar() {
   function handleSubredditClick(e, subredditName) {
     e.preventDefault();
 
-    if (localStorage.getItem("subreddit_pick") === subredditName) {
-      return;
-    }
+    if (location.pathname === `/subreddit/posts/${subredditName}`) {
+          return;
+        }
 
-    localStorage.setItem("subreddit_pick", subredditName);
-    console.log(
-      "Selected subreddit: " + localStorage.getItem("subreddit_pick")
-    );
+    console.log(`Selected subreddit: ${subredditName}`);
 
     dispatch(clearPosts());
     dispatch(clearSubPosts());
     navigate(`/subreddit/posts/${subredditName}`);
+    dispatch(fetchSubredditPosts(subredditName));
   }
 
   return (

@@ -33,6 +33,7 @@ export default function SubredditPosts() {
               timePosted={post.data.created_utc}
               postId={post.data.id}
               likes={post.data.likes}
+              permalink={post.data.permalink}
             />
           ))}
         </div>

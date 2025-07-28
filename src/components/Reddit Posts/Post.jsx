@@ -2,6 +2,8 @@ import ReactMarkdown from "react-markdown";
 import { formatDistanceToNow } from "date-fns";
 import { postVote } from "../../features/posts/voting/voteSlice";
 import { useDispatch } from "react-redux";
+import { reloadPost } from "../../features/posts/voting/reloadPostVoteSlice";
+import { useState } from "react";
 
 export default function Post({
   subreddit,
@@ -12,8 +14,11 @@ export default function Post({
   timePosted,
   postId,
   likes,
+  permalink
 }) {
   const dispatch = useDispatch();
+  const [postLikes, setPostLikes] = useState(likes);
+  const [likesCount, setLikesCount] = useState(voteNum);
 
   const timeAgo = formatDistanceToNow(new Date(timePosted * 1000), {
     addSuffix: true,
@@ -41,44 +46,62 @@ export default function Post({
     return "now";
   }
 
-  async function handleUpVote(likes, postId) {
-
+  async function handleUpVote(postId, postPermalink) {
     if (!postId) {
       return;
     }
 
-    if (likes !== true) {
+    if (postLikes !== true) {
       const id = `t3_${postId}`;
       const voteNum = 1;
       await dispatch(postVote({ id, voteNum }));
+      setLikesCount(likesCount + 1);
     }
 
-    if (likes === true) {
+    if (postLikes === true) {
       const id = `t3_${postId}`;
       const voteNum = 0;
       await dispatch(postVote({ id, voteNum }));
+      setLikesCount(likesCount - 1);
     }
 
+    if (postLikes === false) {
+      setLikesCount(likesCount + 2);
+    }
+
+    const newPostData = await dispatch(reloadPost(postPermalink));
+    console.log(`Post ${postId} likes is now: ${newPostData.payload.likes}`);
+
+     setPostLikes(newPostData.payload.likes);
   }
 
-  async function handleDownVote(likes, postId) {
+  async function handleDownVote(postId, postPermalink) {
+    if (!postId) {
+      return;
+    }
 
-      if (!postId) {
-        return;
-      }
-
-    if (likes !== false) {
+    if (postLikes !== false) {
       const id = `t3_${postId}`;
       const voteNum = -1;
       await dispatch(postVote({ id, voteNum }));
+      setLikesCount(likesCount - 1);
     }
 
-    if (likes === false) {
+    if (postLikes === false) {
       const id = `t3_${postId}`;
       const voteNum = 0;
       await dispatch(postVote({ id, voteNum }));
+      setLikesCount(likesCount + 1);
     }
 
+    if (postLikes === true) {
+      setLikesCount(likesCount - 2);
+    }
+
+    const newPostData = await dispatch(reloadPost(postPermalink));
+    console.log(`Post ${postId} likes is now: ${newPostData.payload.likes}`);
+
+    setPostLikes(newPostData.payload.likes);
   }
 
   return (
@@ -91,35 +114,35 @@ export default function Post({
         <div className="post-without-sub">
           <div className="post-voting">
             <div className="voting-button">
-              {likes === true ? (
+              {postLikes === true ? (
                 <button
                   className="up-vote-complete"
-                  onClick={() => handleUpVote(likes, postId)}
+                  onClick={() => handleUpVote(postId, permalink)}
                 >
                   ꜛ
                 </button>
               ) : (
                 <button
                   className="up-vote"
-                  onClick={() => handleUpVote(likes, postId)}
+                  onClick={() => handleUpVote(postId, permalink)}
                 >
                   ꜛ
                 </button>
               )}
             </div>
-            <p>{voteNum}</p>
+            <p>{likesCount}</p>
             <div className="voting-button">
-              {likes === false ? (
+              {postLikes === false ? (
                 <button
                   className="down-vote-complete"
-                  onClick={() => handleDownVote(likes, postId)}
+                  onClick={() => handleDownVote(postId, permalink)}
                 >
                   ꜜ
                 </button>
               ) : (
                 <button
                   className="down-vote"
-                  onClick={() => handleDownVote(likes, postId)}
+                  onClick={() => handleDownVote(postId,permalink)}
                 >
                   ꜜ
                 </button>

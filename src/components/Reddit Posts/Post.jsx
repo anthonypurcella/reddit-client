@@ -2,8 +2,9 @@ import ReactMarkdown from "react-markdown";
 import { formatDistanceToNow } from "date-fns";
 import { postVote } from "../../features/posts/voting/voteSlice";
 import { useDispatch } from "react-redux";
-import { reloadPost } from "../../features/posts/voting/reloadPostVoteSlice";
+import { fetchPostInfo } from '../../features/posts/fetchPostInfoSlice';
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function Post({
   subreddit,
@@ -17,6 +18,8 @@ export default function Post({
   permalink
 }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [postLikes, setPostLikes] = useState(likes);
   const [likesCount, setLikesCount] = useState(voteNum);
 
@@ -69,10 +72,11 @@ export default function Post({
       setLikesCount(likesCount + 2);
     }
 
-    const newPostData = await dispatch(reloadPost(postPermalink));
-    console.log(`Post ${postId} likes is now: ${newPostData.payload.likes}`);
+    const newPostData = await dispatch(fetchPostInfo(postPermalink));
+    console.log(newPostData);
+    console.log(`Post ${postId} likes is now: ${newPostData.payload.postData.likes}`);
 
-     setPostLikes(newPostData.payload.likes);
+     setPostLikes(newPostData.payload.postData.likes);
   }
 
   async function handleDownVote(postId, postPermalink) {
@@ -98,10 +102,16 @@ export default function Post({
       setLikesCount(likesCount - 2);
     }
 
-    const newPostData = await dispatch(reloadPost(postPermalink));
-    console.log(`Post ${postId} likes is now: ${newPostData.payload.likes}`);
+    const newPostData = await dispatch(fetchPost(postPermalink));
+    console.log(
+      `Post ${postId} likes is now: ${newPostData.payload.postData.likes}`
+    );
 
-    setPostLikes(newPostData.payload.likes);
+    setPostLikes(newPostData.payload.postData.likes);
+  }
+
+  function handlePostSelect(postPermalink) {
+    navigate(`/post/${encodeURIComponent(postPermalink)}`);
   }
 
   return (
@@ -142,14 +152,17 @@ export default function Post({
               ) : (
                 <button
                   className="down-vote"
-                  onClick={() => handleDownVote(postId,permalink)}
+                  onClick={() => handleDownVote(postId, permalink)}
                 >
                   ꜜ
                 </button>
               )}
             </div>
           </div>
-          <div className="post-body">
+          <div
+            className="post-body"
+            onClick={(e) => handlePostSelect(permalink)}
+          >
             <div className="post-name">
               <h3>{title}</h3>
             </div>
@@ -189,7 +202,7 @@ export default function Post({
               </ReactMarkdown>
             </div>
             <div className="post-details">
-              <p>{timeAgo}</p>
+              <p className="time-ago">{timeAgo}</p>
               <button className="comment-button">Comments</button>
             </div>
           </div>

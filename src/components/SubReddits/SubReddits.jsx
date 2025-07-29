@@ -1,7 +1,7 @@
 import SubReddit from "./SubReddit";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchSubscribedSubreddits } from "../../features/subreddits/subredditsSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router";
 import { clearSubPosts } from "../../features/posts/displaySubredditPostsSlice";
 import { fetchSubredditPosts } from "../../features/posts/displaySubredditPostsSlice";
@@ -14,11 +14,23 @@ export default function SubReddits() {
   const subreddits = useSelector((state) => state.subreddits.list);
   const accessToken = localStorage.getItem("access_token");
 
+  const [currentSubreddit, setCurrentSubreddit] = useState("");
+
   useEffect(() => {
     if (accessToken) {
       dispatch(fetchSubscribedSubreddits(accessToken));
     }
   }, [dispatch, accessToken]);
+
+  useEffect(() => {
+    if (location.pathname.includes("/subreddit")) {
+      const subredditName = location.pathname.split("/").pop();
+
+      if (subredditName !== currentSubreddit) {
+        setCurrentSubreddit(subredditName);
+      }
+    }
+  }, [location.pathname]);
 
   if (!accessToken) {
     return null;
@@ -37,9 +49,6 @@ export default function SubReddits() {
     navigate(`/subreddit/posts/${subredditName}`);
     dispatch(fetchSubredditPosts(subredditName));
   }
-
-  // Extract current subreddit from URL path
-  const currentSubreddit = location.pathname.split("/").pop();
 
   return (
     <div className="sub-reddits">

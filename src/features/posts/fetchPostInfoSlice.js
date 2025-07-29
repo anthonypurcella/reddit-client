@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import getValidAccessToken from "../../oauth/getValidAccessToken";
+import getValidAccessToken from "../oauth/getValidAccessToken";
 
-export const reloadPost = createAsyncThunk(
-  "/post-vote/reload",
+export const fetchPostInfo = createAsyncThunk(
+  "/fetch/post-info",
   async ( permalink ) => {
     console.log(`Reloading post: ${permalink}`);
     const accessToken = await getValidAccessToken();
@@ -20,15 +20,18 @@ export const reloadPost = createAsyncThunk(
     }
 
     const data = await response.json();
+    console.log(data);
     const postData = data[0].data.children[0].data;
+    const postComments = data[1].data.children;
 
     console.log(postData);
-    return postData;
+    console.log(postComments);
+    return {postData, postComments};
   }
 );
 
-const reloadPostVoteSlice = createSlice({
-    name: 'reload-post',
+const fetchPostInfoSlice = createSlice({
+    name: 'fetch-post',
     initialState: {
         post: {},
         status: 'idle',
@@ -37,18 +40,18 @@ const reloadPostVoteSlice = createSlice({
     reducers: {},
     extraReducers(builder) {
         builder
-        .addCase(reloadPost.pending, (state) => {
-            state.status = 'loading';
-        })
-        .addCase(reloadPost.fulfilled, (state, action) => {
-            state.status = 'succeeded';
+          .addCase(fetchPostInfo.pending, (state) => {
+            state.status = "loading";
+          })
+          .addCase(fetchPostInfo.fulfilled, (state, action) => {
+            state.status = "succeeded";
             state.post = action.payload;
-        })
-        .addCase(reloadPost.rejected, (state, action) => {
-            state.status = 'failed';
+          })
+          .addCase(fetchPostInfo.rejected, (state, action) => {
+            state.status = "failed";
             state.error = action.error.message;
-        })
+          });
     }
 });
 
-export default reloadPostVoteSlice.reducer;
+export default fetchPostInfoSlice.reducer;

@@ -2,7 +2,6 @@ import Post from "./Post";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchSubredditsPosts } from "../../features/posts/displayPostsSlice";
 import { fetchDefaultPosts } from "../../features/posts/displayDefaultPostsSlice";
-import { fetchSubredditPosts } from "../../features/posts/displaySubredditPostsSlice";
 import { useEffect } from "react";
 
 

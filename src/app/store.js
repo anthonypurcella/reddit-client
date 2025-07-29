@@ -5,7 +5,8 @@ import defaultpostsReducer from '../features/posts/displayDefaultPostsSlice';
 import subredditpostsReducer from '../features/posts/displaySubredditPostsSlice';
 import searchRedditReducer from '../features/search/searchRedditSlice';
 import votingReducer from '../features/posts/voting/voteSlice';
-import reloadPostReducer from '../features/posts/voting/reloadPostVoteSlice'
+import fetchPostInfoReducer from '../features/posts/fetchPostInfoSlice'
+import fetchUserInfoReducer from '../features/user/fetchUserInfoSlice'
 
 
 const store = configureStore({
@@ -16,7 +17,8 @@ const store = configureStore({
         subredditposts: subredditpostsReducer,
         searchreddit: searchRedditReducer,
         vote: votingReducer,
-        reloadpost: reloadPostReducer,
+        fetchpost: fetchPostInfoReducer,
+        fetchUserInfo: fetchUserInfoReducer,
     },
 })
 

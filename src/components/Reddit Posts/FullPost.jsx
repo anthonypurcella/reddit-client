@@ -13,6 +13,7 @@ export default function FullPost({ currentPermalink }) {
   const [postLikes, setPostLikes] = useState(null);
   const [likesCount, setLikesCount] = useState(0);
   const [timeAgo, setTimeAgo] = useState(0);
+  
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -34,6 +35,7 @@ export default function FullPost({ currentPermalink }) {
 
     fetchPost();
   }, [currentPermalink]);
+
 
 
   return (
@@ -149,6 +151,8 @@ export default function FullPost({ currentPermalink }) {
               author={comment.data.author}
               bodyText={comment.data.body}
               ups={comment.data.ups}
+              timePosted={comment.data.created_utc}
+              repliesObject={comment.data.replies.data}
             />
           ))}
       </div>

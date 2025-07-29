@@ -208,6 +208,8 @@
 .comment-header {
   display: flex;
   align-items: center;
+  font-size: .8rem;
+  color: lightgray;
 }
 
 .user-icon {
@@ -218,6 +220,30 @@
   height: 40px;
   border-radius: 100px;
 }
+
+/* Replies */
+.comment-reply {
+  background-color: rgb(29, 29, 29);
+  color: rgb(255, 255, 255);
+  border-radius: 10px;
+  text-align: left;
+
+  padding: 2rem;
+}
+
+.reply-header {
+  display: flex;
+  align-items: center;
+  font-size: .8rem;
+  color: lightgray;
+}
+
+.reply-divider {
+  border-left: solid rgb(53, 53, 53) 2px;
+  
+}
+
+
 
 /* SubReddits */
 .active-subreddit {

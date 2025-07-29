@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchUserInfo } from "../../features/user/fetchUserInfoSlice";
+import Reply from "./Reply";
 
-export default function Comment({ author, bodyText, ups }) {
+export default function Comment({ author, bodyText, ups, timePosted, repliesObject }) {
+
+const [replies, setReplies] = useState(repliesObject?.children || []);
+const [showDetails, setShowDetails] = useState(true);
+
   const dispatch = useDispatch();
 
   const [userImage, setUserImage] = useState("");
@@ -22,24 +27,73 @@ export default function Comment({ author, bodyText, ups }) {
     fetchUser();
   }, [author]);
 
+  function timeagoShort() {
+    const seconds = Math.floor(Date.now() / 1000) - timePosted;
+
+    const intervals = [
+      { label: "y", seconds: 31536000 },
+      { label: "mo", seconds: 2592000 },
+      { label: "d", seconds: 86400 },
+      { label: "h", seconds: 3600 },
+      { label: "m", seconds: 60 },
+      { label: "s", seconds: 1 },
+    ];
+
+    for (const interval of intervals) {
+      const count = Math.floor(seconds / interval.seconds);
+      if (count >= 1) {
+        return `${count}${interval.label}`;
+      }
+    }
+
+    return "now";
+  }
+
   return (
-    <div className="post-comment">
-      <div className="comment-header">
-        {" "}
-        <div className="user-icon">
-          {" "}
-          {userImage ? (
-            <img src={userImage} />
+    <>
+      <div className="post-comment">
+        <div onClick={() => setShowDetails(!showDetails)}>
+          <div className="comment-header">
+            <div className="user-icon">
+              {userImage ? (
+                <img
+                  src={userImage}
+                  onError={() => setUserImage("/avatar_default_6.png")}
+                />
+              ) : (
+                <img src="/avatar_default_6.png" />
+              )}
+            </div>
+            <div className="comment-author">
+              <p>
+                {author} • {timeagoShort(timePosted)}
+              </p>
+            </div>
+          </div>
+          {showDetails ? (
+            <div>
+              <div className="post-comment-body">{bodyText}</div>
+              <p>{ups}</p>
+              <div className="comment-replies">
+                {replies.length > 0 &&
+                  showDetails &&
+                  replies.map((reply) => (
+                    <Reply
+                      key={reply.data.id}
+                      author={reply.data.author}
+                      bodyText={reply.data.body}
+                      ups={reply.data.ups}
+                      timePosted={reply.data.created_utc}
+                    />
+                  ))}
+              </div>
+            </div>
           ) : (
-            <img src="/avatar_default_14_545452-4021259790.png" />
+            <></>
           )}
         </div>
-        <div className="comment-author">
-          <h5>{author}</h5>
-        </div>
       </div>
-      <div className="post-comment-body">{bodyText}</div>
-      <p>{ups}</p>
-    </div>
+    </>
   );
 }
+

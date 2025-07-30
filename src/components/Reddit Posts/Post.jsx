@@ -102,7 +102,7 @@ export default function Post({
       setLikesCount(likesCount - 2);
     }
 
-    const newPostData = await dispatch(fetchPost(postPermalink));
+    const newPostData = await dispatch(fetchPostInfo(postPermalink));
     console.log(
       `Post ${postId} likes is now: ${newPostData.payload.postData.likes}`
     );

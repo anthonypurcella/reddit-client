@@ -1,18 +1,30 @@
 import { useEffect, useState } from "react";
+import { postVote } from "../../features/posts/voting/voteSlice";
 import { useDispatch } from "react-redux";
+import { fetchPostInfo } from "../../features/posts/fetchPostInfoSlice";
 import { fetchUserInfo } from "../../features/user/fetchUserInfoSlice";
 import Reply from "./Reply";
 
-export default function Comment({ author, bodyText, ups, timePosted, repliesObject }) {
-
-const [replies, setReplies] = useState(repliesObject?.data?.children || []);
-const [showDetails, setShowDetails] = useState(true);
-
+export default function Comment({
+  author,
+  bodyText,
+  ups,
+  timePosted,
+  repliesObject,
+  likes,
+  id,
+  permalink,
+}) {
   const dispatch = useDispatch();
 
+  const [replies, setReplies] = useState(repliesObject?.data?.children || []);
+  const [showDetails, setShowDetails] = useState(true);
   const [userImage, setUserImage] = useState("");
+  const [commentLikes, setCommentLikes] = useState(likes);
+  const [likesCount, setLikesCount] = useState(ups);
 
   useEffect(() => {
+    if (replies.length === 0) {
     const fetchUser = async () => {
       const userInfo = await dispatch(fetchUserInfo(author));
 
@@ -25,6 +37,8 @@ const [showDetails, setShowDetails] = useState(true);
       }
     };
     fetchUser();
+        console.log(`Fetching all users info`);
+  }
   }, [author]);
 
   function timeagoShort() {
@@ -47,6 +61,70 @@ const [showDetails, setShowDetails] = useState(true);
     }
 
     return "now";
+  }
+
+  async function handleUpVote(commentId, commentPermalink) {
+    if (!commentId) {
+      return;
+    }
+
+    if (commentLikes !== true) {
+      const id = `t1_${commentId}`;
+      const voteNum = 1;
+      await dispatch(postVote({ id, voteNum }));
+      setLikesCount(likesCount + 1);
+    }
+
+    if (commentLikes === true) {
+      const id = `t1_${commentId}`;
+      const voteNum = 0;
+      await dispatch(postVote({ id, voteNum }));
+      setLikesCount(likesCount - 1);
+    }
+
+    if (commentLikes === false) {
+      setLikesCount(likesCount + 2);
+    }
+
+    const newPostData = await dispatch(fetchPostInfo(commentPermalink));
+    console.log(newPostData);
+    console.log(
+      `Comment ${commentId} likes is now: ${newPostData.payload.postComments[0].data.likes}`
+    );
+
+    setCommentLikes(newPostData.payload.postComments[0].data.likes);
+  }
+
+  async function handleDownVote(commentId, commentPermalink) {
+    if (!commentId) {
+      return;
+    }
+
+    if (commentLikes !== false) {
+      const id = `t1_${commentId}`;
+      const voteNum = -1;
+      await dispatch(postVote({ id, voteNum }));
+      setLikesCount(likesCount - 1);
+    }
+
+    if (commentLikes === false) {
+      const id = `t1_${commentId}`;
+      const voteNum = 0;
+      await dispatch(postVote({ id, voteNum }));
+      setLikesCount(likesCount + 1);
+    }
+
+    if (commentLikes === true) {
+      setLikesCount(likesCount - 2);
+    }
+
+    const newPostData = await dispatch(fetchPostInfo(commentPermalink));
+    console.log(newPostData);
+    console.log(
+      `Comment ${commentId} likes is now: ${newPostData.payload.postComments[0].data.likes}`
+    );
+
+    setCommentLikes(newPostData.payload.postComments[0].data.likes);
   }
 
   return (
@@ -73,8 +151,49 @@ const [showDetails, setShowDetails] = useState(true);
         </div>
         {showDetails ? (
           <div>
-            <div className="post-comment-body" onClick={() => setShowDetails(false)}>{bodyText}</div>
-            <p>{ups}</p>
+            <div
+              className="post-comment-body"
+              onClick={() => setShowDetails(false)}
+            >
+              {bodyText}
+            </div>
+            <div className="full-comment-voting">
+              <div className="voting-button">
+                {commentLikes === true ? (
+                  <button
+                    className="up-vote-complete"
+                    onClick={() => handleUpVote(id, permalink)}
+                  >
+                    ꜛ
+                  </button>
+                ) : (
+                  <button
+                    className="up-vote"
+                    onClick={() => handleUpVote(id, permalink)}
+                  >
+                    ꜛ
+                  </button>
+                )}
+              </div>
+              <p className="comment-likes-count">{likesCount}</p>
+              <div className="voting-button">
+                {commentLikes === false ? (
+                  <button
+                    className="down-vote-complete"
+                    onClick={() => handleDownVote(id, permalink)}
+                  >
+                    ꜜ
+                  </button>
+                ) : (
+                  <button
+                    className="down-vote"
+                    onClick={() => handleDownVote(id, permalink)}
+                  >
+                    ꜜ
+                  </button>
+                )}
+              </div>
+            </div>
             <div className="comment-replies">
               {replies.length > 0 &&
                 showDetails &&
@@ -89,6 +208,9 @@ const [showDetails, setShowDetails] = useState(true);
                       ups={reply.data.ups}
                       timePosted={reply.data.created_utc}
                       repliesObject={reply.data.replies}
+                      likes={reply.data.likes}
+                      id={reply.data.id}
+                      permalink={reply.data.permalink}
                     />
                   ))}
             </div>
@@ -100,4 +222,7 @@ const [showDetails, setShowDetails] = useState(true);
     </>
   );
 }
+
+
+
 

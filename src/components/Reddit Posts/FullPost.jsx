@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { postVote } from "../../features/posts/voting/voteSlice";
 import { fetchPostInfo } from "../../features/posts/fetchPostInfoSlice";
 import ReactMarkdown from "react-markdown";
 import { formatDistanceToNow } from "date-fns";
@@ -10,10 +11,72 @@ export default function FullPost({ currentPermalink }) {
 
   const [postInfo, setPostInfo] = useState({});
   const [postComments, setPostComments] = useState([]);
-  const [postLikes, setPostLikes] = useState(null);
-  const [likesCount, setLikesCount] = useState(0);
+  const [postLikes, setPostLikes] = useState();
+  const [likesCount, setLikesCount] = useState();
   const [timeAgo, setTimeAgo] = useState(0);
-  
+
+  async function handleUpVote(postId, postPermalink) {
+    if (!postId) {
+      return;
+    }
+
+    if (postLikes !== true) {
+      const id = `t3_${postId}`;
+      const voteNum = 1;
+      await dispatch(postVote({ id, voteNum }));
+      setLikesCount(likesCount + 1);
+    }
+
+    if (postLikes === true) {
+      const id = `t3_${postId}`;
+      const voteNum = 0;
+      await dispatch(postVote({ id, voteNum }));
+      setLikesCount(likesCount - 1);
+    }
+
+    if (postLikes === false) {
+      setLikesCount(likesCount + 2);
+    }
+
+    const newPostData = await dispatch(fetchPostInfo(postPermalink));
+    console.log(newPostData);
+    console.log(
+      `Post ${postId} likes is now: ${newPostData.payload.postData.likes}`
+    );
+
+    setPostLikes(newPostData.payload.postData.likes);
+  }
+
+  async function handleDownVote(postId, postPermalink) {
+    if (!postId) {
+      return;
+    }
+
+    if (postLikes !== false) {
+      const id = `t3_${postId}`;
+      const voteNum = -1;
+      await dispatch(postVote({ id, voteNum }));
+      setLikesCount(likesCount - 1);
+    }
+
+    if (postLikes === false) {
+      const id = `t3_${postId}`;
+      const voteNum = 0;
+      await dispatch(postVote({ id, voteNum }));
+      setLikesCount(likesCount + 1);
+    }
+
+    if (postLikes === true) {
+      setLikesCount(likesCount - 2);
+    }
+
+    const newPostData = await dispatch(fetchPostInfo(postPermalink));
+    console.log(
+      `Post ${postId} likes is now: ${newPostData.payload.postData.likes}`
+    );
+
+    setPostLikes(newPostData.payload.postData.likes);
+  }
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -30,13 +93,11 @@ export default function FullPost({ currentPermalink }) {
         )
       );
       setLikesCount(result.payload.postData.ups);
-      setPostLikes(result.payload.postDatalikes);
+      setPostLikes(result.payload.postData.likes);
     };
 
     fetchPost();
   }, [currentPermalink]);
-
-
 
   return (
     <>
@@ -153,6 +214,9 @@ export default function FullPost({ currentPermalink }) {
               ups={comment.data.ups}
               timePosted={comment.data.created_utc}
               repliesObject={comment.data.replies}
+              likes={comment.data.likes}
+              id={comment.data.id}
+              permalink={comment.data.permalink}
             />
           ))}
       </div>

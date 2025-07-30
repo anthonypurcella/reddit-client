@@ -5,17 +5,13 @@ export const fetchUserInfo = createAsyncThunk(
   "/fetch/user",
   async (username) => {
     const accessToken = await getValidAccessToken();
-    console.log(`Fetching user's info: ${username}`);
 
     const response = await fetch(
       `http://localhost:3001/user/${username}?access_token=${accessToken}`
     );
 
     const data = await response.json();
-
     const userInfo = data.data;
-
-    console.log(userInfo);
     return userInfo;
   }
 );

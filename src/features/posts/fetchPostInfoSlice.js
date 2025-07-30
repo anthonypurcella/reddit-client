@@ -23,9 +23,7 @@ export const fetchPostInfo = createAsyncThunk(
     console.log(data);
     const postData = data[0].data.children[0].data;
     const postComments = data[1].data.children;
-
-    console.log(postData);
-    console.log(postComments);
+    
     return {postData, postComments};
   }
 );

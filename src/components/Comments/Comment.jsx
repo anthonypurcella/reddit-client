@@ -87,6 +87,7 @@ const [showDetails, setShowDetails] = useState(true);
                         bodyText={reply.data.body}
                         ups={reply.data.ups}
                         timePosted={reply.data.created_utc}
+                        repliesObject={reply.data.replies}
                       />
                     ))}
               </div>

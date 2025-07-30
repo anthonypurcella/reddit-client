@@ -8,11 +8,12 @@ export default function Reply({
   bodyText,
   ups,
   timePosted,
-  replies,
+  repliesObject,
 }) {
   const dispatch = useDispatch();
 
   const [userImage, setUserImage] = useState("");
+  const [replies, setReplies] = useState(repliesObject?.data?.children || []);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -75,6 +76,22 @@ export default function Reply({
             </div>
             <div className="comment-reply-body">{bodyText}</div>
             <p>{ups}</p>
+            <div className="reply-replies">
+              {replies.length > 0 &&
+                replies
+                  .slice()
+                  .sort((a, b) => a.data.created_utc - b.data.created_utc)
+                  .map((reply) => (
+                    <Reply
+                      key={reply.data.id}
+                      author={reply.data.author}
+                      bodyText={reply.data.body}
+                      ups={reply.data.ups}
+                      timePosted={reply.data.created_utc}
+                      repliesObject={reply.data.replies}
+                    />
+                  ))}
+            </div>
           </div>
         </div>
       </div>

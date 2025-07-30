@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchUserInfo } from "../../features/user/fetchUserInfoSlice";
@@ -14,6 +13,7 @@ export default function Reply({
 
   const [userImage, setUserImage] = useState("");
   const [replies, setReplies] = useState(repliesObject?.data?.children || []);
+  const [showDetails, setShowDetails] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -57,7 +57,7 @@ export default function Reply({
       <div className="full-reply">
         <div className="reply-divider">
           <div className="comment-reply">
-            <div className="reply-header">
+            <div className="reply-header" onClick={() => setShowDetails(true)}>
               <div className="user-icon">
                 {userImage ? (
                   <img
@@ -74,24 +74,37 @@ export default function Reply({
                 </p>
               </div>
             </div>
-            <div className="comment-reply-body">{bodyText}</div>
-            <p>{ups}</p>
-            <div className="reply-replies">
-              {replies.length > 0 &&
-                replies
-                  .slice()
-                  .sort((a, b) => a.data.created_utc - b.data.created_utc)
-                  .map((reply) => (
-                    <Reply
-                      key={reply.data.id}
-                      author={reply.data.author}
-                      bodyText={reply.data.body}
-                      ups={reply.data.ups}
-                      timePosted={reply.data.created_utc}
-                      repliesObject={reply.data.replies}
-                    />
-                  ))}
-            </div>
+            {showDetails ? (
+              <div>
+                {" "}
+                <div
+                  className="comment-reply-body"
+                  onClick={() => setShowDetails(false)}
+                >
+                  {bodyText}
+                </div>
+                <p>{ups}</p>
+                <div className="reply-replies">
+                  {replies.length > 0 &&
+                    showDetails &&
+                    replies
+                      .slice()
+                      .sort((a, b) => a.data.created_utc - b.data.created_utc)
+                      .map((reply) => (
+                        <Reply
+                          key={reply.data.id}
+                          author={reply.data.author}
+                          bodyText={reply.data.body}
+                          ups={reply.data.ups}
+                          timePosted={reply.data.created_utc}
+                          repliesObject={reply.data.replies}
+                        />
+                      ))}
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>

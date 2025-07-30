@@ -52,7 +52,7 @@ const [showDetails, setShowDetails] = useState(true);
   return (
     <>
       <div className="post-comment">
-        <div onClick={() => setShowDetails(!showDetails)}>
+        <div onClick={() => setShowDetails(true)}>
           <div className="comment-header">
             <div className="user-icon">
               {userImage ? (
@@ -70,32 +70,32 @@ const [showDetails, setShowDetails] = useState(true);
               </p>
             </div>
           </div>
-          {showDetails ? (
-            <div>
-              <div className="post-comment-body">{bodyText}</div>
-              <p>{ups}</p>
-              <div className="comment-replies">
-                {replies.length > 0 &&
-                  showDetails &&
-                  replies
-                    .slice()
-                    .sort((a, b) => a.data.created_utc - b.data.created_utc)
-                    .map((reply) => (
-                      <Reply
-                        key={reply.data.id}
-                        author={reply.data.author}
-                        bodyText={reply.data.body}
-                        ups={reply.data.ups}
-                        timePosted={reply.data.created_utc}
-                        repliesObject={reply.data.replies}
-                      />
-                    ))}
-              </div>
-            </div>
-          ) : (
-            <></>
-          )}
         </div>
+        {showDetails ? (
+          <div>
+            <div className="post-comment-body" onClick={() => setShowDetails(false)}>{bodyText}</div>
+            <p>{ups}</p>
+            <div className="comment-replies">
+              {replies.length > 0 &&
+                showDetails &&
+                replies
+                  .slice()
+                  .sort((a, b) => a.data.created_utc - b.data.created_utc)
+                  .map((reply) => (
+                    <Reply
+                      key={reply.data.id}
+                      author={reply.data.author}
+                      bodyText={reply.data.body}
+                      ups={reply.data.ups}
+                      timePosted={reply.data.created_utc}
+                      repliesObject={reply.data.replies}
+                    />
+                  ))}
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );

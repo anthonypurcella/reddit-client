@@ -3,24 +3,11 @@ import getValidAccessToken from "../oauth/getValidAccessToken";
 
 export const fetchSubredditsPosts = createAsyncThunk(
   "posts/fetchPosts",
-  async (afterToken = null) => {
+  async () => {
     const accessToken = await getValidAccessToken();
 
-
-      const url = new URL("https://oauth.reddit.com/new");
-      url.searchParams.append("limit", "10");
-
-      if (afterToken) {
-        url.searchParams.append("after", afterToken);
-      }
-
-      const response = await fetch(url.toString(), {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "User-Agent": "web:anthonypmm:v1.0 (by /u/anthonypmm)",
-        },
-      });
-
+      const response = await fetch(`http://localhost:3001/api/posts?access_token=${accessToken}`);
+      
       if (!response.ok) {
         throw new Error(`Failed to fetch: ${response.statusText}`);
       }

@@ -195,6 +195,23 @@
   padding: 0 10px;
 }
 
+.comment-input-container {
+  margin-bottom: 20px;
+  border: solid rgb(165, 165, 165) 1px;
+  border-radius: 20px;
+  padding: .5rem;
+}
+
+.comment-input-container input {
+  border: none;
+  background-color: transparent;
+  width: 90%;
+}
+
+.comment-input-container input:focus {
+  outline: none;
+}
+
 /* Comment */
 .full-comment-voting {
   display: flex;

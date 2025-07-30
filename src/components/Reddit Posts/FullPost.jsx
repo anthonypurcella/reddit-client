@@ -5,6 +5,7 @@ import { fetchPostInfo } from "../../features/posts/fetchPostInfoSlice";
 import ReactMarkdown from "react-markdown";
 import { formatDistanceToNow } from "date-fns";
 import Comment from "../Comments/Comment";
+import { postComment } from "../../features/comment/postCommentSlice";
 
 export default function FullPost({ currentPermalink }) {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ export default function FullPost({ currentPermalink }) {
   const [postLikes, setPostLikes] = useState();
   const [likesCount, setLikesCount] = useState();
   const [timeAgo, setTimeAgo] = useState(0);
+  const [commentInput, setCommentInput] = useState('');
 
   async function handleUpVote(postId, postPermalink) {
     if (!postId) {
@@ -76,6 +78,14 @@ export default function FullPost({ currentPermalink }) {
     );
 
     setPostLikes(newPostData.payload.postData.likes);
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const id = `t3_${postInfo.id}`;
+    const text = commentInput;
+    await dispatch(postComment({id, text}));
+    setCommentInput('');
   }
 
   useEffect(() => {
@@ -201,6 +211,19 @@ export default function FullPost({ currentPermalink }) {
             </div>
           </div>
         </div>
+      </div>
+      <div className="comment-input-container">
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <input
+            placeholder="Join the conversation"
+            type="text"
+            value={commentInput}
+            onChange={(e) => setCommentInput(e.target.value)}
+          />
+          <button type="submit" disabled={!commentInput}>
+            Reply
+          </button>
+        </form>
       </div>
       <div className="post-comments">
         {postComments

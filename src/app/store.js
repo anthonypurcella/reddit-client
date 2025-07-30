@@ -7,6 +7,7 @@ import searchRedditReducer from '../features/search/searchRedditSlice';
 import votingReducer from '../features/posts/voting/voteSlice';
 import fetchPostInfoReducer from '../features/posts/fetchPostInfoSlice'
 import fetchUserInfoReducer from '../features/user/fetchUserInfoSlice'
+import commentReducer from '../features/comment/postCommentSlice';
 
 
 const store = configureStore({
@@ -19,6 +20,7 @@ const store = configureStore({
         vote: votingReducer,
         fetchpost: fetchPostInfoReducer,
         fetchUserInfo: fetchUserInfoReducer,
+        comment: commentReducer,
     },
 })
 

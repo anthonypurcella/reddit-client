@@ -5,7 +5,7 @@ import Reply from "./Reply";
 
 export default function Comment({ author, bodyText, ups, timePosted, repliesObject }) {
 
-const [replies, setReplies] = useState(repliesObject?.children || []);
+const [replies, setReplies] = useState(repliesObject?.data?.children || []);
 const [showDetails, setShowDetails] = useState(true);
 
   const dispatch = useDispatch();
@@ -77,15 +77,18 @@ const [showDetails, setShowDetails] = useState(true);
               <div className="comment-replies">
                 {replies.length > 0 &&
                   showDetails &&
-                  replies.map((reply) => (
-                    <Reply
-                      key={reply.data.id}
-                      author={reply.data.author}
-                      bodyText={reply.data.body}
-                      ups={reply.data.ups}
-                      timePosted={reply.data.created_utc}
-                    />
-                  ))}
+                  replies
+                    .slice()
+                    .sort((a, b) => a.data.created_utc - b.data.created_utc)
+                    .map((reply) => (
+                      <Reply
+                        key={reply.data.id}
+                        author={reply.data.author}
+                        bodyText={reply.data.body}
+                        ups={reply.data.ups}
+                        timePosted={reply.data.created_utc}
+                      />
+                    ))}
               </div>
             </div>
           ) : (

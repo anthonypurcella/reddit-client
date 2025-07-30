@@ -87,7 +87,7 @@ export default function FullPost({ currentPermalink }) {
                   },
                 }}
               >
-                {postInfo.text}
+                {postInfo.selftext}
               </ReactMarkdown>
             </div>
             <div className="post-details">
@@ -152,7 +152,7 @@ export default function FullPost({ currentPermalink }) {
               bodyText={comment.data.body}
               ups={comment.data.ups}
               timePosted={comment.data.created_utc}
-              repliesObject={comment.data.replies.data}
+              repliesObject={comment.data.replies}
             />
           ))}
       </div>

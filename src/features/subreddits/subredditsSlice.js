@@ -8,15 +8,8 @@ export const fetchSubscribedSubreddits = createAsyncThunk(
 
     let subreddits = [];
 
-    const url = new URL("https://oauth.reddit.com/subreddits/mine/subscriber");
-    url.searchParams.append("limit", "100");
 
-    const response = await fetch(url.toString(), {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "User-Agent": "web:anthonypmm:v1.0 (by /u/anthonypmm)",
-      },
-    });
+    const response = await fetch(`http://localhost:3001/api/subreddits?access_token=${accessToken}`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch: ${response.statusText}`);

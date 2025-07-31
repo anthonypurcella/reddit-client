@@ -214,7 +214,7 @@ export default function FullPost({ currentPermalink }) {
       </div>
       <div className="comment-input-container">
         <form onSubmit={(e) => handleSubmit(e)}>
-          <input
+          <textarea
             placeholder="Join the conversation"
             type="text"
             value={commentInput}
@@ -238,7 +238,7 @@ export default function FullPost({ currentPermalink }) {
               timePosted={comment.data.created_utc}
               repliesObject={comment.data.replies}
               likes={comment.data.likes}
-              id={comment.data.id}
+              commentId={comment.data.id}
               permalink={comment.data.permalink}
             />
           ))}

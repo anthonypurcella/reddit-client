@@ -2,7 +2,7 @@ import ReactMarkdown from "react-markdown";
 import { formatDistanceToNow } from "date-fns";
 import { postVote } from "../../features/posts/voting/voteSlice";
 import { useDispatch } from "react-redux";
-import { fetchPostInfo } from '../../features/posts/fetchPostInfoSlice';
+import { fetchPostInfo } from "../../features/posts/fetchPostInfoSlice";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -15,7 +15,7 @@ export default function Post({
   timePosted,
   postId,
   likes,
-  permalink
+  permalink,
 }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -74,9 +74,11 @@ export default function Post({
 
     const newPostData = await dispatch(fetchPostInfo(postPermalink));
     console.log(newPostData);
-    console.log(`Post ${postId} likes is now: ${newPostData.payload.postData.likes}`);
+    console.log(
+      `Post ${postId} likes is now: ${newPostData.payload.postData.likes}`
+    );
 
-     setPostLikes(newPostData.payload.postData.likes);
+    setPostLikes(newPostData.payload.postData.likes);
   }
 
   async function handleDownVote(postId, postPermalink) {
@@ -159,51 +161,58 @@ export default function Post({
               )}
             </div>
           </div>
-          <div
-            className="post-body"
-            onClick={(e) => handlePostSelect(permalink)}
-          >
-            <div className="post-name">
-              <h3>{title}</h3>
-            </div>
-            <div className="post-main">
-              <img src={image} className="post-image" />
-              <ReactMarkdown
-                components={{
-                  code({ node, inline, className, children, ...props }) {
-                    if (inline) {
-                      // inline code, render normally
+          <div>
+            <div
+              className="post-body"
+              onClick={(e) => handlePostSelect(permalink)}
+            >
+              <div className="post-name">
+                <h3>{title}</h3>
+              </div>
+              <div className="post-main">
+                <img src={image} className="post-image" />
+                <ReactMarkdown
+                  components={{
+                    code({ node, inline, className, children, ...props }) {
+                      if (inline) {
+                        // inline code, render normally
+                        return (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      }
+                      // multiline code block
                       return (
-                        <code className={className} {...props}>
-                          {children}
-                        </code>
+                        <pre
+                          style={{
+                            overflowX: "scroll",
+                            maxWidth: "80%",
+                            background: "#f6f8fa",
+                            padding: "10px",
+                            borderRadius: "6px",
+                          }}
+                        >
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        </pre>
                       );
-                    }
-                    // multiline code block
-                    return (
-                      <pre
-                        style={{
-                          overflowX: "scroll",
-                          maxWidth: "80%",
-                          background: "#f6f8fa",
-                          padding: "10px",
-                          borderRadius: "6px",
-                        }}
-                      >
-                        <code className={className} {...props}>
-                          {children}
-                        </code>
-                      </pre>
-                    );
-                  },
-                }}
-              >
-                {text}
-              </ReactMarkdown>
+                    },
+                  }}
+                >
+                  {text}
+                </ReactMarkdown>
+              </div>
             </div>
             <div className="post-details">
               <p className="time-ago">{timeAgo}</p>
-              <button className="comment-button">Comments</button>
+              <button
+                onClick={(e) => handlePostSelect(permalink)}
+                className="comment-button"
+              >
+                Comments
+              </button>
             </div>
           </div>
         </div>

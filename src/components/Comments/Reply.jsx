@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { postVote } from "../../features/posts/voting/voteSlice";
 import { fetchPostInfo } from "../../features/posts/fetchPostInfoSlice";
 import { fetchUserInfo } from "../../features/user/fetchUserInfoSlice";
+import { postComment } from "../../features/comment/postCommentSlice";
 
 export default function Reply({
   author,
@@ -11,7 +12,7 @@ export default function Reply({
   timePosted,
   repliesObject,
   likes,
-  id,
+  replyId,
   permalink
 }) {
   const dispatch = useDispatch();
@@ -21,6 +22,8 @@ export default function Reply({
   const [showDetails, setShowDetails] = useState(true);
   const [commentLikes, setCommentLikes] = useState(likes);
   const [likesCount, setLikesCount] = useState(ups);
+  const [showReplyInput, setShowReplyInput] = useState(false);
+  const [commentInput, setCommentInput] = useState("");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -123,6 +126,14 @@ export default function Reply({
       setCommentLikes(newPostData.payload.postComments[0].data.likes);
     }
 
+    async function handleCommentSubmit(e) {
+          e.preventDefault();
+          const id = `t1_${replyId}`;
+          const text = commentInput;
+          await dispatch(postComment({ id, text }));
+          setCommentInput("");
+        }
+
   return (
     <>
       <div className="full-reply">
@@ -154,43 +165,81 @@ export default function Reply({
                 >
                   {bodyText}
                 </div>
-                <div className="full-comment-voting">
-                  <div className="voting-button">
-                    {commentLikes === true ? (
-                      <button
-                        className="up-vote-complete"
-                        onClick={() => handleUpVote(id, permalink)}
-                      >
-                        ꜛ
-                      </button>
-                    ) : (
-                      <button
-                        className="up-vote"
-                        onClick={() => handleUpVote(id, permalink)}
-                      >
-                        ꜛ
-                      </button>
-                    )}
+                <div className="comment-details">
+                  <div className="full-comment-voting">
+                    <div className="voting-button">
+                      {commentLikes === true ? (
+                        <button
+                          className="up-vote-complete"
+                          onClick={() => handleUpVote(replyId, permalink)}
+                        >
+                          ꜛ
+                        </button>
+                      ) : (
+                        <button
+                          className="up-vote"
+                          onClick={() => handleUpVote(replyId, permalink)}
+                        >
+                          ꜛ
+                        </button>
+                      )}
+                    </div>
+                    <p className="comment-likes-count">{likesCount}</p>
+                    <div className="voting-button">
+                      {commentLikes === false ? (
+                        <button
+                          className="down-vote-complete"
+                          onClick={() => handleDownVote(replyId, permalink)}
+                        >
+                          ꜜ
+                        </button>
+                      ) : (
+                        <button
+                          className="down-vote"
+                          onClick={() => handleDownVote(replyId, permalink)}
+                        >
+                          ꜜ
+                        </button>
+                      )}
+                    </div>
                   </div>
-                  <p className="comment-likes-count">{likesCount}</p>
-                  <div className="voting-button">
-                    {commentLikes === false ? (
-                      <button
-                        className="down-vote-complete"
-                        onClick={() => handleDownVote(id, permalink)}
-                      >
-                        ꜜ
-                      </button>
-                    ) : (
-                      <button
-                        className="down-vote"
-                        onClick={() => handleDownVote(id, permalink)}
-                      >
-                        ꜜ
-                      </button>
-                    )}
-                  </div>
+                  <button
+                    onClick={() => setShowReplyInput(true)}
+                    className="reply-button"
+                  >
+                    Reply
+                  </button>
                 </div>
+                {showReplyInput ? (
+                  <form
+                    onSubmit={(e) => handleCommentSubmit(e)}
+                    className="reply-input-container"
+                  >
+                    <textarea
+                      placeholder="Join the conversation"
+                      value={commentInput}
+                      onChange={(e) => setCommentInput(e.target.value)}
+                    />
+                    <div className="reply-input-buttons">
+                      <button
+                        onClick={() => {
+                          setShowReplyInput(false), setCommentInput("");
+                        }}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={!commentInput}
+                        className="comment-reply-button"
+                      >
+                        Comment
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <></>
+                )}
                 <div className="reply-replies">
                   {replies.length > 0 &&
                     showDetails &&

@@ -171,38 +171,43 @@ export default function Post({
               </div>
               <div className="post-main">
                 <img src={image} className="post-image" />
-                <ReactMarkdown
-                  components={{
-                    code({ node, inline, className, children, ...props }) {
-                      if (inline) {
-                        // inline code, render normally
+                <div className="react-markdown-container">
+                  <ReactMarkdown
+                    components={{
+                      code({ node, inline, className, children, ...props }) {
+                        if (inline) {
+                          // inline code, render normally
+                          return (
+                            <code className={className} {...props}>
+                              {children}
+                            </code>
+                          );
+                        }
+                        // multiline code block
                         return (
-                          <code className={className} {...props}>
-                            {children}
-                          </code>
+                          <pre
+                            style={{
+                              overflowX: "scroll",
+                              maxWidth: "100%",
+                              background: "#f6f8fa",
+                              padding: "10px",
+                              borderRadius: "6px",
+                              whiteSpace: "pre-wrap", // wrap long lines
+                              wordBreak: "break-word", // allow breaking in words
+                              overflowWrap: "break-word", // legacy/fallback
+                            }}
+                          >
+                            <code className={className} {...props}>
+                              {children}
+                            </code>
+                          </pre>
                         );
-                      }
-                      // multiline code block
-                      return (
-                        <pre
-                          style={{
-                            overflowX: "scroll",
-                            maxWidth: "80%",
-                            background: "#f6f8fa",
-                            padding: "10px",
-                            borderRadius: "6px",
-                          }}
-                        >
-                          <code className={className} {...props}>
-                            {children}
-                          </code>
-                        </pre>
-                      );
-                    },
-                  }}
-                >
-                  {text}
-                </ReactMarkdown>
+                      },
+                    }}
+                  >
+                    {text}
+                  </ReactMarkdown>
+                </div>
               </div>
             </div>
             <div className="post-details">

@@ -163,7 +163,7 @@
 }
 
 .post-image {
-  width: 80%;
+  width: 100%;
 }
 
 .post-details {
@@ -179,6 +179,12 @@
 .comment-button {
   max-width: 120px;
 }
+
+.react-markdown-container {
+  word-break: break-word;
+}
+
+
 
 /* Full Post */
 .full-post-voting {

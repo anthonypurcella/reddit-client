@@ -161,7 +161,7 @@ export default function Post({
               )}
             </div>
           </div>
-          <div>
+          <div className="post-body-container">
             <div
               className="post-body"
               onClick={(e) => handlePostSelect(permalink)}
@@ -225,3 +225,4 @@ export default function Post({
     </>
   );
 }
+

@@ -27,7 +27,6 @@ export default function Comment({
   const [commentInput, setCommentInput] = useState("");
 
   useEffect(() => {
-    if (replies.length === 0) {
       const fetchUser = async () => {
         const userInfo = await dispatch(fetchUserInfo(author));
 
@@ -41,7 +40,7 @@ export default function Comment({
       };
       fetchUser();
       console.log(`Fetching all users info`);
-    }
+    
   }, [author]);
 
   function timeagoShort() {

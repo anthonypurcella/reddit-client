@@ -23,7 +23,6 @@ export default function SubReddits() {
     if (accessToken) {
       dispatch(fetchSubscribedSubreddits(accessToken));
     }
-    localStorage.setItem("subreddits", subreddits)
   }, [dispatch, accessToken]);
 
   useEffect(() => {
@@ -35,10 +34,6 @@ export default function SubReddits() {
       }
     }
   }, [location.pathname]);
-
-  if (!accessToken) {
-    return null;
-  }
 
   function handleSubredditClick(e, subredditName) {
     e.preventDefault();
@@ -61,7 +56,6 @@ export default function SubReddits() {
           <p>r/{currentSubreddit}</p>
         </div>
       )}
-
       {subreddits.map((subreddit) => {
         const name = subreddit.data.display_name;
         return (

@@ -7,7 +7,6 @@ import { useNavigate } from "react-router";
 import { timeAgo } from "../../util/timeFormatting";
 import { timeagoShort } from "../../util/timeFormatting";
 
-
 export default function Post({
   subreddit,
   title,
@@ -24,7 +23,6 @@ export default function Post({
 
   const [postLikes, setPostLikes] = useState(likes);
   const [likesCount, setLikesCount] = useState(voteNum);
-
 
   async function handleUpVote(postId, postPermalink) {
     if (!postId) {
@@ -147,7 +145,15 @@ export default function Post({
                 <h3>{title}</h3>
               </div>
               <div className="post-main">
-                <img src={image} className="post-image" />
+                {image ? (
+                  <img
+                    src={image}
+                    alt="user uploaded image"
+                    className="post-image"
+                  />
+                ) : (
+                  <></>
+                )}
                 <div className="react-markdown-container">
                   <ReactMarkdown
                     components={{
@@ -202,4 +208,3 @@ export default function Post({
     </>
   );
 }
-

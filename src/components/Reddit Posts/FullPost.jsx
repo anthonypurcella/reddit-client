@@ -120,6 +120,7 @@ useEffect(() => {
                   "&"
                 )}
                 className="post-image"
+                alt="user uploaded image"
               />
               <ReactMarkdown
                 components={{

@@ -5,6 +5,8 @@ import { fetchPostInfo } from "../../features/posts/fetchPostInfoSlice";
 import { fetchUserInfo } from "../../features/user/fetchUserInfoSlice";
 import { postComment } from "../../features/comment/postCommentSlice";
 import Reply from "./Reply";
+import { timeagoShort } from "../../util/timeFormatting";
+import { renderCommentImages } from "../../features/comment/renderCommentImages";
 
 export default function Comment({
   author,
@@ -42,28 +44,6 @@ export default function Comment({
       console.log(`Fetching all users info`);
     
   }, [author]);
-
-  function timeagoShort() {
-    const seconds = Math.floor(Date.now() / 1000) - timePosted;
-
-    const intervals = [
-      { label: "y", seconds: 31536000 },
-      { label: "mo", seconds: 2592000 },
-      { label: "d", seconds: 86400 },
-      { label: "h", seconds: 3600 },
-      { label: "m", seconds: 60 },
-      { label: "s", seconds: 1 },
-    ];
-
-    for (const interval of intervals) {
-      const count = Math.floor(seconds / interval.seconds);
-      if (count >= 1) {
-        return `${count}${interval.label}`;
-      }
-    }
-
-    return "now";
-  }
 
   async function handleUpVote(commentId, commentPermalink) {
     if (!commentId) {
@@ -165,7 +145,7 @@ export default function Comment({
               className="post-comment-body"
               onClick={() => setShowDetails(false)}
             >
-              {bodyText}
+              {renderCommentImages(bodyText)}
             </div>
             <div className="comment-details">
               <div className="full-comment-voting">

@@ -31,6 +31,7 @@ export default function PostPage() {
     localStorage.removeItem("logged_token");
     localStorage.removeItem("subreddit_pick");
     localStorage.removeItem("saved_subreddits");
+    localStorage.removeItem("all_posts");
 
     dispatch(clearPosts());
     console.log("Logged out!");

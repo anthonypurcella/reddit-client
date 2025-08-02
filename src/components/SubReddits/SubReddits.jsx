@@ -1,5 +1,5 @@
 import SubReddit from "./SubReddit";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchSubscribedSubreddits } from "../../features/subreddits/subredditsSlice";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router";

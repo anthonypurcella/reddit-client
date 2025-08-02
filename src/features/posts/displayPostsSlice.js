@@ -14,10 +14,11 @@ export const fetchSubredditsPosts = createAsyncThunk(
 
       const data = await response.json();
       const posts = data.data.children;
-      console.log(posts);
-      const after = data.data.after;
 
-      return { posts, after };
+      localStorage.setItem("all_posts", JSON.stringify(posts));
+      console.log(posts);
+
+      return { posts };
   }
 );
 

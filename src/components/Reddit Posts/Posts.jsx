@@ -1,19 +1,21 @@
 import Post from "./Post";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchSubredditsPosts } from "../../features/posts/displayPostsSlice";
 import { fetchDefaultPosts } from "../../features/posts/displayDefaultPostsSlice";
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
 
 export default function Posts() {
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state.posts.list);
+
+  const [posts, setPosts] = useState(() => {
+    const allPosts = localStorage.getItem("all_posts");
+    return allPosts ? JSON.parse(allPosts) : [];
+  });
+
   const defaultPosts = useSelector((state) => state.defaultposts.list);
 
   const accessToken = localStorage.getItem("access_token");
   const loggedIn = localStorage.getItem("logged_token");
-
-
 
   useEffect(() => {
     if (!loggedIn) {
@@ -22,13 +24,17 @@ export default function Posts() {
   }, [loggedIn]);
 
   useEffect(() => {
-    if (accessToken && loggedIn) {
-      dispatch(fetchSubredditsPosts());
+    if (accessToken && loggedIn && posts.length === 0) {
+      const fetchAllPosts = async () => {
+        await dispatch(fetchSubredditsPosts());
+        const updatedPosts = localStorage.getItem("all_posts");
+        if (updatedPosts) {
+          setPosts(JSON.parse(updatedPosts));
+        }
+      };
+      fetchAllPosts();
     }
-  }, [accessToken, loggedIn]);
-
-
-
+  }, [dispatch, accessToken, loggedIn, posts.length]);
 
   if (loggedIn) {
     return (

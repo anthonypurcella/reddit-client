@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSearchTerm } from "../../features/search/searchRedditSlice";
 import { useDebounce } from "react-use";

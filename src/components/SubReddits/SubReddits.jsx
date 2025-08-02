@@ -17,9 +17,13 @@ export default function SubReddits() {
   const [currentSubreddit, setCurrentSubreddit] = useState("");
 
   useEffect(() => {
+    if (subreddits && subreddits.length > 0) {
+      return;
+    }
     if (accessToken) {
       dispatch(fetchSubscribedSubreddits(accessToken));
     }
+    localStorage.setItem("subreddits", subreddits)
   }, [dispatch, accessToken]);
 
   useEffect(() => {

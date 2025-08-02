@@ -1,10 +1,12 @@
 import ReactMarkdown from "react-markdown";
-import { formatDistanceToNow } from "date-fns";
 import { postVote } from "../../features/posts/voting/voteSlice";
 import { useDispatch } from "react-redux";
 import { fetchPostInfo } from "../../features/posts/fetchPostInfoSlice";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { timeAgo } from "../../util/timeFormatting";
+import { timeagoShort } from "../../util/timeFormatting";
+
 
 export default function Post({
   subreddit,
@@ -23,31 +25,6 @@ export default function Post({
   const [postLikes, setPostLikes] = useState(likes);
   const [likesCount, setLikesCount] = useState(voteNum);
 
-  const timeAgo = formatDistanceToNow(new Date(timePosted * 1000), {
-    addSuffix: true,
-  });
-
-  function timeagoShort() {
-    const seconds = Math.floor(Date.now() / 1000) - timePosted;
-
-    const intervals = [
-      { label: "y", seconds: 31536000 },
-      { label: "mo", seconds: 2592000 },
-      { label: "d", seconds: 86400 },
-      { label: "h", seconds: 3600 },
-      { label: "m", seconds: 60 },
-      { label: "s", seconds: 1 },
-    ];
-
-    for (const interval of intervals) {
-      const count = Math.floor(seconds / interval.seconds);
-      if (count >= 1) {
-        return `${count}${interval.label}`;
-      }
-    }
-
-    return "now";
-  }
 
   async function handleUpVote(postId, postPermalink) {
     if (!postId) {
@@ -211,7 +188,7 @@ export default function Post({
               </div>
             </div>
             <div className="post-details">
-              <p className="time-ago">{timeAgo}</p>
+              <p className="time-ago">{timeAgo(timePosted)}</p>
               <button
                 onClick={(e) => handlePostSelect(permalink)}
                 className="comment-button"

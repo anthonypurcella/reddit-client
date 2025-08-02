@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { postVote } from "../../features/posts/voting/voteSlice";
 import { fetchPostInfo } from "../../features/posts/fetchPostInfoSlice";
 import ReactMarkdown from "react-markdown";
-import { formatDistanceToNow } from "date-fns";
+import { timeAgo } from "../../util/timeFormatting";
 import Comment from "../Comments/Comment";
 import { postComment } from "../../features/comment/postCommentSlice";
 
@@ -14,8 +14,8 @@ export default function FullPost({ currentPermalink }) {
   const [postComments, setPostComments] = useState([]);
   const [postLikes, setPostLikes] = useState();
   const [likesCount, setLikesCount] = useState();
-  const [timeAgo, setTimeAgo] = useState(0);
   const [commentInput, setCommentInput] = useState('');
+  const [timePosted, setTimePosted] = useState(0);
 
   async function handleUpVote(postId, postPermalink) {
     if (!postId) {
@@ -88,24 +88,17 @@ export default function FullPost({ currentPermalink }) {
     setCommentInput('');
   }
 
-  useEffect(() => {
+useEffect(() => {
+  if (postInfo && postInfo.length > 0) {
+  return;
+  }
     const fetchPost = async () => {
       const result = await dispatch(fetchPostInfo(currentPermalink));
       console.log(result);
       setPostInfo(result.payload.postData);
       setPostComments(result.payload.postComments);
-      setTimeAgo(
-        formatDistanceToNow(
-          new Date(result.payload.postData.created_utc * 1000),
-          {
-            addSuffix: true,
-          }
-        )
-      );
-      setLikesCount(result.payload.postData.ups);
-      setPostLikes(result.payload.postData.likes);
-    };
-
+      setTimePosted(result.payload.postData.created_utc)
+    }
     fetchPost();
   }, [currentPermalink]);
 
@@ -207,7 +200,7 @@ export default function FullPost({ currentPermalink }) {
                   )}
                 </div>
               </div>
-              <p className="time-ago">{timeAgo}</p>
+              <p className="time-ago">{timeAgo(timePosted)}</p>
             </div>
           </div>
         </div>

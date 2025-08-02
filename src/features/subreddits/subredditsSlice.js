@@ -37,6 +37,10 @@ export const fetchSubscribedSubreddits = createAsyncThunk(
       return 0;
     }
 
+    localStorage.setItem(
+      "saved_subreddits",
+      JSON.stringify(subreddits.sort(compare))
+    );
     return subreddits.sort(compare);
   }
 );

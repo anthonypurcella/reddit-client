@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { postVote } from "../../features/posts/voting/voteSlice";
 import { fetchPostInfo } from "../../features/posts/fetchPostInfoSlice";
 import ReactMarkdown from "react-markdown";
-import { timeAgo } from "../../util/timeFormatting";
+import { timeagoShort } from "../../util/timeFormatting";
 import Comment from "../Comments/Comment";
 import { postComment } from "../../features/comment/postCommentSlice";
 
@@ -97,7 +97,9 @@ useEffect(() => {
       console.log(result);
       setPostInfo(result.payload.postData);
       setPostComments(result.payload.postComments);
-      setTimePosted(result.payload.postData.created_utc)
+      setTimePosted(result.payload.postData.created_utc);
+      setLikesCount(result.payload.postData.ups)
+      setPostLikes(result.payload.postData.likes);
     }
     fetchPost();
   }, [currentPermalink]);
@@ -106,7 +108,11 @@ useEffect(() => {
     <>
       <div className="post">
         <div className="post-header">
-          <p>r/{postInfo.subreddit}</p>
+          <div className="post-header-top">
+            <p className="subreddit-name">r/{postInfo.subreddit}</p>
+            <p className="time-ago"> • {timeagoShort(timePosted)}</p>
+          </div>
+          <p className="post-author">{postInfo.author}</p>
         </div>
         <div className="post-without-sub">
           <div className="post-body">
@@ -114,14 +120,18 @@ useEffect(() => {
               <h3>{postInfo.title}</h3>
             </div>
             <div className="post-main">
-              <img
-                src={postInfo.preview?.images?.[0]?.source?.url?.replace(
-                  /&amp;/g,
-                  "&"
-                )}
-                className="post-image"
-                alt="user uploaded image"
-              />
+              {postInfo.thumbnail_height ? (
+                <img
+                  src={postInfo.preview?.images?.[0]?.source?.url?.replace(
+                    /&amp;/g,
+                    "&"
+                  )}
+                  alt="user uploaded image"
+                  className="post-image"
+                />
+              ) : (
+                <></>
+              )}
               <ReactMarkdown
                 components={{
                   code({ node, inline, className, children, ...props }) {
@@ -201,7 +211,6 @@ useEffect(() => {
                   )}
                 </div>
               </div>
-              <p className="time-ago">{timeAgo(timePosted)}</p>
             </div>
           </div>
         </div>

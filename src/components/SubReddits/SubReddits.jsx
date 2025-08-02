@@ -11,19 +11,26 @@ export default function SubReddits() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const subreddits = useSelector((state) => state.subreddits.list);
-  const accessToken = localStorage.getItem("access_token");
+  const [subreddits, setSubreddits] = useState(() => {
+    const saved = localStorage.getItem("saved_subreddits");
+    return saved ? JSON.parse(saved) : [];
+  });
 
+  const accessToken = localStorage.getItem("access_token");
   const [currentSubreddit, setCurrentSubreddit] = useState("");
 
   useEffect(() => {
-    if (subreddits && subreddits.length > 0) {
-      return;
+    if (subreddits.length === 0 && accessToken) {
+      const fetchSubreddits = async () => {
+        await dispatch(fetchSubscribedSubreddits(accessToken));
+        const updated = localStorage.getItem("saved_subreddits");
+        if (updated) {
+          setSubreddits(JSON.parse(updated));
+        }
+      };
+      fetchSubreddits();
     }
-    if (accessToken) {
-      dispatch(fetchSubscribedSubreddits(accessToken));
-    }
-  }, [dispatch, accessToken]);
+  }, [dispatch, accessToken, subreddits.length]);
 
   useEffect(() => {
     if (location.pathname.includes("/subreddit")) {
@@ -47,6 +54,10 @@ export default function SubReddits() {
     dispatch(clearSubPosts());
     navigate(`/subreddit/posts/${subredditName}`);
     dispatch(fetchSubredditPosts(subredditName));
+  }
+
+  if (!subreddits) {
+    return;
   }
 
   return (

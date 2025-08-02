@@ -24,6 +24,7 @@ export default function HomePage() {
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("logged_token");
     localStorage.removeItem("subreddit_pick");
+    localStorage.removeItem("saved_subreddits");
 
     dispatch(clearPosts());
     console.log("Logged out!");

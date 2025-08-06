@@ -23,5 +23,3 @@ function App() {
 
 export default App
 
-
-//RUN NODEMON INDEX.JS from cd server

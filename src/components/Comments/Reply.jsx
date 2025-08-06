@@ -124,11 +124,11 @@ export default function Reply({
                 {userImage ? (
                   <img
                     src={userImage}
-                    onError={() => setUserImage("/avatar_default_6.png")}
+                    onError={() => setUserImage("assets/avatar_default_6.png")}
                     alt="redditor user icon"
                   />
                 ) : (
-                  <img src="/avatar_default_6.png" />
+                  <img src="assets/avatar_default_6.png" />
                 )}
               </div>
               <div className="reply-author">

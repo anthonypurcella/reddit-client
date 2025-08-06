@@ -126,10 +126,10 @@ export default function Comment({
               {userImage ? (
                 <img
                   src={userImage}
-                  onError={() => setUserImage("/avatar_default_6.png")}
+                  onError={() => setUserImage("assets/avatar_default_6.png")}
                 />
               ) : (
-                <img src="/avatar_default_6.png" />
+                <img src="assets/avatar_default_6.png" />
               )}
             </div>
             <div className="comment-author">

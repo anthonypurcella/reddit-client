@@ -4,11 +4,12 @@ export default function SubReddit({name, icon}) {
       <>
         <div className="sub-reddit">
           <img
-            src={icon ? icon : "./assets/avatar_default_6.png"}
-            alt="redditor user icon"
+            src={icon || "/assets/reddit-logo.jpg"}
+            alt="Subreddit Reddit Icon"
           />
           <p>{name}</p>
         </div>
       </>
     );
 }
+

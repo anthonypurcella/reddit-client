@@ -28,7 +28,7 @@ export default function AuthCallback() {
 
       try {
         const response = await fetch(
-          "http://localhost:3001/auth/reddit",
+          "https://redditminimal-client-server.onrender.com/auth/reddit",
           {
             method: "POST",
             headers: {
@@ -36,7 +36,8 @@ export default function AuthCallback() {
             },
             body: JSON.stringify({
               code,
-              redirect_uri: "http://localhost:5173/auth/callback",
+              redirect_uri:
+                "https://redditminimal-client.netlify.app/auth/callback",
             }),
           }
         );
@@ -61,6 +62,8 @@ export default function AuthCallback() {
         localStorage.setItem("refresh_token", refresh_token);
         localStorage.removeItem("oauth_state");
         console.log("Logged in!");
+        console.log(access_token);
+        console.log(refresh_token);
 
         navigate("/");
       } catch (err) {

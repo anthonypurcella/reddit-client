@@ -9,7 +9,9 @@ export const fetchSubscribedSubreddits = createAsyncThunk(
     let subreddits = [];
 
 
-    const response = await fetch(`http://localhost:3001/api/subreddits?access_token=${accessToken}`);
+    const response = await fetch(
+      `https://redditminimal-client-server.onrender.com/api/subreddits?access_token=${accessToken}`
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to fetch: ${response.statusText}`);

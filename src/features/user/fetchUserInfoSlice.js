@@ -7,7 +7,7 @@ export const fetchUserInfo = createAsyncThunk(
     const accessToken = await getValidAccessToken();
 
     const response = await fetch(
-      `http://localhost:3001/user/${username}?access_token=${accessToken}`
+      `https://redditminimal-client-server.onrender.com/user/${username}?access_token=${accessToken}`
     );
 
     const data = await response.json();

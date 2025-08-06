@@ -6,7 +6,9 @@ export const fetchSubredditsPosts = createAsyncThunk(
   async () => {
     const accessToken = await getValidAccessToken();
 
-      const response = await fetch(`http://localhost:3001/api/posts?access_token=${accessToken}`);
+      const response = await fetch(
+        `https://redditminimal-client-server.onrender.com/api/posts?access_token=${accessToken}`
+      );
       
       if (!response.ok) {
         throw new Error(`Failed to fetch: ${response.statusText}`);

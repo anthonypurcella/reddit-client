@@ -4,8 +4,9 @@ import { useEffect } from "react";
 export default function OAuthLogin() {
 
   useEffect(() => {
-    const REDDIT_CLIENT_ID = import.meta.env.VITE_REDDIT_CLIENT_ID;
-    const REDIRECT_URI = "http://localhost:5173/auth/callback";
+    const REDDIT_CLIENT_ID = "2kkAY4bvgmtuHpKAdruepw";
+    const REDIRECT_URI =
+      "https://redditminimal-client.netlify.app/auth/callback";
     const SCOPE = "identity read vote submit mysubreddits";
     const STATE = uuidv4();
 

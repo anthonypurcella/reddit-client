@@ -9,7 +9,7 @@ export const fetchPostInfo = createAsyncThunk(
 
 
     const response = await fetch(
-      `http://localhost:3001/api/reddit-post?permalink=${encodeURIComponent(
+      `https://redditminimal-client-server.onrender.com/api/reddit-post?permalink=${encodeURIComponent(
         permalink
       )}&access_token=${accessToken}`
     );

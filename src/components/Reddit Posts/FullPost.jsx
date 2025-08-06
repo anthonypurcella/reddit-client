@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import { timeagoShort } from "../../util/timeFormatting";
 import Comment from "../Comments/Comment";
 import { postComment } from "../../features/comment/postCommentSlice";
+import { BounceLoader } from "react-spinners";
 
 export default function FullPost({ currentPermalink }) {
   const dispatch = useDispatch();
@@ -103,6 +104,7 @@ useEffect(() => {
     }
     fetchPost();
   }, [currentPermalink]);
+
 
   return (
     <>
@@ -249,3 +251,4 @@ useEffect(() => {
     </>
   );
 }
+
